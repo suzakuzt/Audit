@@ -1,0 +1,404 @@
+[
+  {
+    "standard_field": "amount",
+    "alias": "AMOUNT",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "amount",
+    "alias": "TOTAL (USD)",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "amount",
+    "alias": "Total",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "amount",
+    "alias": "Total U$",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "beneficiary_bank",
+    "alias": "BANKING DETAILS",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "beneficiary_bank",
+    "alias": "Bank Name",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "beneficiary_bank",
+    "alias": "Beneficiary Bank",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "buyer_name_address",
+    "alias": "BUYER CONSIGNEE",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "buyer_name_address",
+    "alias": "Client",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "buyer_name_address",
+    "alias": "ClientAddress",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "ADDRESS",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "ADDRESS PROFORMA INVOICEL5135",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "BUYER CONSIGNEE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "Client",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "ClientAddress",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "Consignee Notify",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "Shipper",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "consignee_name_address",
+    "alias": "Wuhan Port Sino-loyalty International Logistics Co.,Ltd",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "factory_no",
+    "alias": "Plant",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "factory_no",
+    "alias": "est",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "payment_term",
+    "alias": "PAYMENTS CONDITION",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "payment_term",
+    "alias": "Payment Terms",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "payment_term",
+    "alias": "Term of Payment",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "payment_term",
+    "alias": "Term of Payment and Banking Details",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_destination",
+    "alias": "Local Destination",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_destination",
+    "alias": "PORT OF DESTINATION",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_destination",
+    "alias": "Port",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_origin",
+    "alias": "PORT OF LOADING",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_origin",
+    "alias": "Port",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "port_of_origin",
+    "alias": "Port of Shipping",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "prepayment_amount",
+    "alias": "50% IN ADVANCE",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "prepayment_amount",
+    "alias": "PAYMENTS CONDITION",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "prepayment_amount",
+    "alias": "Payment Terms",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "prepayment_amount",
+    "alias": "Term of Payment",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "prepayment_amount",
+    "alias": "Term of Payment and Banking Details",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "product_name",
+    "alias": "DESCRIPTION OF MERCHANDISE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "product_name",
+    "alias": "Description",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "product_name",
+    "alias": "Product Description",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "shelf_life",
+    "alias": "Expire Date",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipment_date",
+    "alias": "SHIPMENT DATE AROUND",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipment_date",
+    "alias": "Shipment",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipment_date",
+    "alias": "Week JUNE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipment_date",
+    "alias": "Week JUNE Shipping",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipper_name_address",
+    "alias": "Barra Mansa Comércio de Carnes e Derivados Ltda",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "shipper_name_address",
+    "alias": "Shipper",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "total_amount",
+    "alias": "TOTAL AMOUNT OF THE INVOICE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "total_amount",
+    "alias": "Total",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "total_weight",
+    "alias": "NET WEIGHT",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "total_weight",
+    "alias": "NET WEIGHT: ABOUT 27,00 MT",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "total_weight",
+    "alias": "Total",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "trade_term",
+    "alias": "CFR VALUE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "trade_term",
+    "alias": "Delivery Term",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "trade_term",
+    "alias": "FREIGHT",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "trade_term",
+    "alias": "Incoterms",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "trade_term",
+    "alias": "NET WEIGHT: ABOUT 27,00 MT CFR VALUE: 155.250,00",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit",
+    "alias": "CLEAN WEIGHT (MT)",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit",
+    "alias": "Packing",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit",
+    "alias": "Quantity",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit",
+    "alias": "Ton",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit_price",
+    "alias": "UNIT PRICE",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit_price",
+    "alias": "UNIT PRICE (USD)",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit_price",
+    "alias": "US$",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "unit_price",
+    "alias": "Unitary Price",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "weight",
+    "alias": "CLEAN WEIGHT (MT)",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "weight",
+    "alias": "QTY",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  },
+  {
+    "standard_field": "weight",
+    "alias": "Quantity",
+    "source": "????????????????????",
+    "confidence": null
+  },
+  {
+    "standard_field": "weight",
+    "alias": "Tons",
+    "source": "当前字段名不在 active alias 库中，可确认后写入",
+    "confidence": null
+  }
+]

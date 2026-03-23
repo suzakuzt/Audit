@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: audit-system
+Version: 0.1.0
+Summary: Starter backend project for an audit system.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: alembic<2.0.0,>=1.16.0
+Requires-Dist: fastapi<1.0.0,>=0.116.0
+Requires-Dist: openai<2.0.0,>=1.68.0
+Requires-Dist: pdfplumber<1.0.0,>=0.11.0
+Requires-Dist: pypdf<6.0.0,>=5.0.0
+Requires-Dist: pydantic-settings<3.0.0,>=2.10.0
+Requires-Dist: python-dotenv<2.0.0,>=1.0.0
+Requires-Dist: python-multipart<1.0.0,>=0.0.20
+Requires-Dist: sqlalchemy<3.0.0,>=2.0.40
+Requires-Dist: streamlit<2.0.0,>=1.44.0
+Requires-Dist: uvicorn[standard]<1.0.0,>=0.35.0
+Provides-Extra: dev
+Requires-Dist: httpx<1.0.0,>=0.28.0; extra == "dev"
+Requires-Dist: pytest<9.0.0,>=8.4.0; extra == "dev"
+Requires-Dist: pytest-cov<7.0.0,>=6.2.0; extra == "dev"
+
+# Audit System
+
+一个基于 FastAPI、SQLAlchemy 和 Alembic 的审计系统初始化骨架，适合作为后端服务起点。
+
+## 快速开始
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -e .[dev]
+copy .env.example .env
+alembic upgrade head
+uvicorn audit_system.main:app --reload
+```
+
+启动后访问：
+
+- `http://127.0.0.1:8000/health`
+- `http://127.0.0.1:8000/api/v1/audit-logs`
+- `http://127.0.0.1:8000/docs`
+
+## 项目结构
+
+```text
+audit_system/
+├── src/audit_system/
+│   ├── api/
+│   ├── db/
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   ├── config.py
+│   └── main.py
+├── alembic/
+│   ├── versions/
+│   └── env.py
+├── tests/
+│   ├── conftest.py
+│   ├── test_audit_logs.py
+│   └── test_health.py
+└── pyproject.toml
+```
+
+## 测试
+
+```bash
+pytest
+```

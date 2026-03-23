@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audit-system"
+version = "0.1.0"
+description = "Starter backend project for an audit system."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "alembic>=1.16.0,<2.0.0",
+  "fastapi>=0.116.0,<1.0.0",
+  "openai>=1.68.0,<2.0.0",
+  "pdfplumber>=0.11.0,<1.0.0",
+  "pypdf>=5.0.0,<6.0.0",
+  "pydantic-settings>=2.10.0,<3.0.0",
+  "requests>=2.32.0,<3.0.0",
+  "python-dotenv>=1.0.0,<2.0.0",
+  "python-multipart>=0.0.20,<1.0.0",
+  "sqlalchemy>=2.0.40,<3.0.0",
+  "streamlit>=1.44.0,<2.0.0",
+  "uvicorn[standard]>=0.35.0,<1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28.0,<1.0.0",
+  "pytest>=8.4.0,<9.0.0",
+  "pytest-cov>=6.2.0,<7.0.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider --basetemp=.runtime_tmp/pytest"
