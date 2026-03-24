@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     llm_model: str = Field(default="deepseek-chat", alias="AUDIT_LLM_MODEL")
     llm_base_url: str | None = Field(default="https://api.deepseek.com", alias="AUDIT_LLM_BASE_URL")
     llm_timeout: int = Field(default=180, alias="AUDIT_LLM_TIMEOUT")
-    ocr_model: str | None = Field(default="", alias="AUDIT_OCR_MODEL")
+    ocr_model: str | None = Field(default="deepseek-chat", alias="AUDIT_OCR_MODEL")
     ocr_max_pages: int = Field(default=3, alias="AUDIT_OCR_MAX_PAGES")
     ocr_engine_preference: str = Field(default="paddle_only", alias="AUDIT_OCR_ENGINE_PREFERENCE")
     paddle_ocr_api_url: str = Field(default="", alias="AUDIT_PADDLE_OCR_API_URL")

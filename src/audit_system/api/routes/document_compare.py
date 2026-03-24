@@ -12,7 +12,7 @@ from fastapi import APIRouter, Body, File, Form, HTTPException, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse
 
 from audit_system.config import settings
-from schemas.document_schema import STANDARD_FIELD_LABELS
+from schemas.document_schema import STANDARD_FIELD_LABELS, STANDARD_FIELD_LEVELS
 from llm.client import LLMRuntimeConfig
 from services.extractor_service import extract_document_with_options, list_prompt_versions, load_knowledge_file
 from services.pdf_text_service import OCRRunConfig, build_pdf_visual_assets, extract_pdf_text
@@ -133,6 +133,7 @@ def _process_uploaded_document(
             force_ocr=force_ocr_value,
             max_pages=settings.ocr_max_pages,
             llm_runtime_config=runtime_config,
+            engine_preference=settings.ocr_engine_preference,
         ),
     )
     visual_pages = build_pdf_visual_assets(content, max_pages=3) if include_visuals else []
@@ -229,6 +230,7 @@ def _maybe_retry_document_with_ocr(
             force_ocr=True,
             max_pages=settings.ocr_max_pages,
             llm_runtime_config=runtime_config,
+            engine_preference=settings.ocr_engine_preference,
         ),
     )
     retried_extraction = extract_document_with_options(
@@ -358,7 +360,7 @@ def foundation_page() -> str:
 @router.get("/document-foundation/ui-config")
 def document_foundation_ui_config() -> dict[str, Any]:
     prompt_name, prompt_text = _default_prompt_context()
-    default_focus_fields = ['factory_no', 'contract_no', 'consignee_name_address', 'product_name', 'weight', 'unit_price', 'amount', 'beneficiary_bank', 'prepayment_amount', 'trade_term', 'total_weight', 'total_amount', 'hs_code', 'payment_term', 'port_of_origin', 'port_of_destination', 'shelf_life', 'shipment_date']
+    default_focus_fields = [field for field, level in STANDARD_FIELD_LEVELS.items() if int(level or 2) == 1]
     return {
         "prompt_text": prompt_text,
         "prompt_file_name": prompt_name,
@@ -366,12 +368,13 @@ def document_foundation_ui_config() -> dict[str, Any]:
         "llm_model": "deepseek-chat",
         "ocr_model": settings.ocr_model or "deepseek-chat",
         "llm_timeout": settings.llm_timeout,
-        "use_alias_active": True,
+        "use_alias_active": False,
         "use_rule_active": True,
         "enable_ocr": True,
-        "force_ocr": False,
+        "force_ocr": True,
         "focus_fields": default_focus_fields,
         "focus_labels": STANDARD_FIELD_LABELS,
+        "field_levels": STANDARD_FIELD_LEVELS,
         "model_options": [
             {"value": "deepseek-chat", "label": "DeepSeek Chat"},
             {"value": "deepseek-reasoner", "label": "DeepSeek Reasoner"},
@@ -662,7 +665,7 @@ async def _run_validation_batch(
             if error:
                 status_entry["status"] = "failed"
                 status_entry["error"] = error
-                status_entry["detail"] = "OCR / \u8bc6\u522b\u5931\u8d25"
+                status_entry["detail"] = _describe_processing_failure(error)
             else:
                 status_entry["status"] = "done"
                 status_entry["detail"] = _describe_extraction_marker(document)
@@ -692,8 +695,8 @@ def _describe_extraction_marker(document: dict[str, Any]) -> str:
     ocr_engine = str(meta.get("ocr_engine", ""))
     if source_kind == "scan_ocr" and ocr_status == "applied":
         if ocr_engine == "paddleocr":
-            return "\u767e\u5ea6 PaddleOCR \u00b7 alias \u5feb\u901f\u5b9a\u4f4d" if decision_mode == "alias_fast_path" else "\u767e\u5ea6 PaddleOCR"
-        return "OCR \u8bc6\u522b \u00b7 alias \u5feb\u901f\u5b9a\u4f4d" if decision_mode == "alias_fast_path" else "OCR \u8bc6\u522b"
+            return "标准文本失败后转百度 PaddleOCR · alias 快速定位" if decision_mode == "alias_fast_path" else "标准文本失败后转百度 PaddleOCR"
+        return "标准文本失败后转大模型 OCR · alias 快速定位" if decision_mode == "alias_fast_path" else "标准文本失败后转大模型 OCR"
     if source_kind == "scan_like" and ocr_status == "failed":
         return "OCR \u5931\u8d25"
     if decision_mode == "alias_fast_path":
@@ -701,6 +704,20 @@ def _describe_extraction_marker(document: dict[str, Any]) -> str:
     if source_kind == "scan_like":
         return "\u626b\u63cf\u4ef6 \u00b7 \u5f85OCR"
     return "\u6807\u51c6\u6587\u672c\u63d0\u53d6"
+
+
+def _describe_processing_failure(error: str) -> str:
+    message = str(error or "").strip()
+    lowered = message.lower()
+    if not message:
+        return "\u5904\u7406\u5931\u8d25"
+    if "ocr" in lowered:
+        return "\u626b\u63cf\u4ef6 OCR \u672a\u6210\u529f"
+    if "timeout" in lowered or "\u8d85\u65f6" in message:
+        return "\u8bc6\u522b\u8d85\u65f6\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5"
+    if "pdf" in lowered:
+        return "PDF \u89e3\u6790\u5931\u8d25"
+    return message[:60]
 
 
 def _build_partial_response(documents: list[dict[str, Any]], options: dict[str, Any]) -> dict[str, Any]:
@@ -787,7 +804,7 @@ async def document_foundation_evaluate(payload: dict[str, Any] = Body(...)) -> J
 
 def _default_prompt_context() -> tuple[str, str]:
     prompt_refs = list_prompt_versions()
-    preferred_order = ["extract_prompt_v1.txt", "extract_prompt.txt", "compare_prompt.txt"]
+    preferred_order = ["extract_prompt_v1.txt", "extract_prompt.txt"]
     prompt_by_name = {prompt.name: prompt for prompt in prompt_refs}
     for name in preferred_order:
         prompt = prompt_by_name.get(name)

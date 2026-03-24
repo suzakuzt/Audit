@@ -19,6 +19,76 @@ PROMPTS_DIR = Path("llm/prompts")
 KNOWLEDGE_DIR = Path("knowledge")
 SYSTEM_PROMPT = "你是一个严格输出 JSON 的审单单据识别助手。你只基于输入文本、active alias 库和 active rule 库工作。"
 
+BUILTIN_FIELD_ALIASES: dict[str, list[str]] = {
+    "factory_no": [
+        "厂号",
+        "工厂号",
+        "工厂编号",
+        "生产厂号",
+        "加工厂号",
+        "注册厂号",
+        "plant no",
+        "plant no.",
+        "plant number",
+        "establishment no",
+        "establishment no.",
+        "est no",
+        "est. no.",
+        "factory no",
+        "factory no.",
+        "packing plant no",
+        "slaughterhouse no",
+        "processing plant no",
+    ],
+    "contract_no": [
+        "contract no",
+        "contract number",
+        "contract ref",
+        "contract reference",
+        "invoice no",
+        "invoice number",
+        "invoice nr",
+        "proforma invoice no",
+        "proforma invoice number",
+        "proforma invoice nr",
+        "pi no",
+        "pi number",
+    ],
+    "consignee_name_address": [
+        "consignee",
+        "consignee address",
+        "consignee name",
+        "consignee name & address",
+        "delivery address",
+        "deliver to",
+        "ship to",
+        "ship to address",
+        "buyer",
+        "buyer address",
+        "client",
+        "client address",
+        "notify",
+        "notify party",
+        "address",
+    ],
+    "product_name": ["product", "product name", "commodity", "goods", "description", "description of goods", "item description"],
+    "weight": ["weight", "gross weight", "net weight", "cargo weight"],
+    "unit_price": ["unit price", "price", "price per unit", "unit value", "rate"],
+    "amount": ["amount", "line amount", "item amount", "goods value"],
+    "beneficiary_bank": ["beneficiary bank", "bank", "bank details", "bank account", "remittance bank"],
+    "prepayment_amount": ["prepayment", "prepayment amount", "deposit", "advance payment", "down payment"],
+    "trade_term": ["trade term", "trade terms", "incoterm", "incoterms", "price term", "delivery term"],
+    "total_weight": ["total weight", "gross weight total", "net weight total", "gw", "nw"],
+    "total_amount": ["total amount", "grand total", "total value", "invoice total"],
+    "unit": ["unit", "uom", "unit of measure", "measurement unit"],
+    "hs_code": ["hs code", "h.s. code", "customs code", "commodity code", "tariff code"],
+    "payment_term": ["payment term", "payment terms", "terms of payment", "payment", "payment condition"],
+    "port_of_origin": ["port of origin", "port of loading", "loading port", "load port", "pol", "departure port"],
+    "port_of_destination": ["port of destination", "port of discharge", "destination port", "discharge port", "pod"],
+    "shelf_life": ["shelf life", "expiry", "expire date", "expiry date", "validity", "best before"],
+    "shipment_date": ["shipment date", "date of shipment", "loading date", "date of loading", "etd"],
+}
+
 PARTY_ADDRESS_FIELD_ALIASES = {
     "consignee_name_address": ["consignee", "consignee address", "consignee name", "consignee name & address", "delivery address", "deliver to"],
 }
@@ -55,7 +125,7 @@ def extract_document(pdf_result: PDFTextResult, prompt_file_name: str) -> Extrac
         pdf_result=pdf_result,
         prompt_file_name=prompt_file_name,
         prompt_text=None,
-        use_alias_active=True,
+        use_alias_active=False,
         use_rule_active=True,
         alias_active_override=None,
         rule_active_override=None,
@@ -198,7 +268,7 @@ def _should_use_alias_fast_path(
     if not use_alias_active or alias_precheck is None:
         return False
     wanted = [str(item).strip() for item in (focus_fields or []) if str(item).strip()]
-    if not wanted or len(wanted) > 3:
+    if not wanted or len(wanted) > 6:
         return False
     if not pdf_result.is_text_valid:
         return False
@@ -287,7 +357,7 @@ def _build_alias_precheck_note(alias_precheck: dict[str, Any]) -> str:
 
 def _try_fast_extract(pdf_result: PDFTextResult, focus_fields: list[str] | None, alias_active: Any) -> dict[str, Any] | None:
     wanted = [str(item).strip() for item in (focus_fields or []) if str(item).strip()]
-    if not wanted or len(wanted) > 2:
+    if not wanted or len(wanted) > 6:
         return None
     text = str(pdf_result.text or "")
     if not text.strip():
@@ -315,23 +385,27 @@ def _fast_find_field(field_name: str, text: str, alias_active: dict[str, Any]) -
     aliases = _field_aliases(field_name, alias_active)
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     line_match = _match_field_from_lines(field_name, aliases, lines)
-    if line_match is not None:
-        return line_match
     regex_match = _match_field_with_regex(field_name, text)
-    if regex_match is not None:
-        return regex_match
-    return None
+    candidates = [item for item in [line_match, regex_match] if item is not None]
+    if not candidates:
+        return None
+    candidates.sort(
+        key=lambda item: (
+            float(item.get("confidence", 0.0) or 0.0),
+            len(str(item.get("source_value", "") or "")),
+        ),
+        reverse=True,
+    )
+    return candidates[0]
 
 
 def _field_aliases(field_name: str, alias_active: dict[str, Any]) -> list[str]:
     aliases = []
     aliases.extend([STANDARD_FIELD_LABELS.get(field_name, ""), field_name])
+    aliases.extend(BUILTIN_FIELD_ALIASES.get(field_name, []))
     aliases.extend([str(item) for item in alias_active.get(field_name, []) or []])
     if field_name == "contract_no":
         aliases = [item for item in aliases if _normalize_simple(item) not in {"contract", "ref no", "proforma invoice"}]
-        aliases.extend(["contract no", "contract number", "contract ref", "invoice no", "invoice number", "proforma invoice nr", "pi no"])
-    if field_name == "factory_no":
-        aliases.extend(["厂号", "工厂号", "工厂编号", "生产厂号", "加工厂号", "注册厂号", "plant no", "plant no.", "plant number", "establishment no", "establishment no.", "est no", "est. no.", "factory no", "factory no.", "packing plant no", "slaughterhouse no", "processing plant no"])
     if field_name in PARTY_ADDRESS_FIELD_ALIASES:
         aliases.extend(PARTY_ADDRESS_FIELD_ALIASES[field_name])
     deduped = []
@@ -347,30 +421,166 @@ def _field_aliases(field_name: str, alias_active: dict[str, Any]) -> list[str]:
 
 
 def _match_field_from_lines(field_name: str, aliases: list[str], lines: list[str]) -> dict[str, Any] | None:
+    best_match: dict[str, Any] | None = None
     for line_index, line in enumerate(lines):
         normalized_line = _normalize_simple(line)
         for alias in aliases:
             normalized_alias = _normalize_simple(alias)
-            if not normalized_alias or normalized_alias not in normalized_line:
+            if not normalized_alias or not _line_contains_alias(normalized_line, normalized_alias):
                 continue
             if field_name == "contract_no" and not _is_contract_label_line(line, alias):
                 continue
-            value = _extract_value_after_alias(line, alias)
-            if not value and line_index + 1 < len(lines):
-                next_line = lines[line_index + 1].strip()
-                if next_line and len(next_line) < 80:
-                    value = next_line
+            value, used_followup_lines = _extract_value_from_line_context(field_name, alias, lines, line_index)
             if value:
-                return {
+                confidence = _estimate_fast_match_confidence(field_name, line, alias, value, used_followup_lines)
+                candidate = {
                     "standard_field": field_name,
                     "standard_label_cn": STANDARD_FIELD_LABELS.get(field_name, field_name),
                     "source_field_name": alias,
                     "source_value": value,
-                    "confidence": 0.97,
+                    "confidence": confidence,
                     "uncertain": False,
-                    "reason": "Fast candidate scan matched a field label with its nearby value.",
+                    "reason": "Fast candidate scan matched a field label with nearby OCR-grounded value text.",
                 }
-    return None
+                if best_match is None:
+                    best_match = candidate
+                    continue
+                current_score = (
+                    float(candidate.get("confidence", 0.0) or 0.0),
+                    len(_normalize_simple(str(candidate.get("source_field_name", "") or "")).split()),
+                    len(str(candidate.get("source_value", "") or "")),
+                )
+                best_score = (
+                    float(best_match.get("confidence", 0.0) or 0.0),
+                    len(_normalize_simple(str(best_match.get("source_field_name", "") or "")).split()),
+                    len(str(best_match.get("source_value", "") or "")),
+                )
+                if current_score > best_score:
+                    best_match = candidate
+    return best_match
+
+
+def _line_contains_alias(normalized_line: str, normalized_alias: str) -> bool:
+    if not normalized_line or not normalized_alias:
+        return False
+    if normalized_alias in normalized_line:
+        return True
+    return normalized_alias.replace(" ", "") in normalized_line.replace(" ", "")
+
+
+def _extract_value_from_line_context(field_name: str, alias: str, lines: list[str], line_index: int) -> tuple[str, bool]:
+    line = str(lines[line_index] or "").strip()
+    tail = _clean_extracted_value(field_name, _extract_value_after_alias(line, alias))
+    if field_name in {"consignee_name_address", "beneficiary_bank", "payment_term"}:
+        block_value = _extract_multiline_value(field_name, tail, lines, line_index)
+        if block_value:
+            return block_value, block_value != tail
+    if tail:
+        return tail, False
+    if line_index + 1 < len(lines):
+        next_line = _clean_extracted_value(field_name, lines[line_index + 1].strip())
+        if next_line and not _looks_like_followup_label(next_line):
+            if field_name == "consignee_name_address":
+                block_value = _extract_multiline_value(field_name, next_line, lines, line_index + 1)
+                if block_value:
+                    return block_value, True
+            return next_line, True
+    return "", False
+
+
+def _extract_multiline_value(field_name: str, first_value: str, lines: list[str], start_index: int) -> str:
+    collected: list[str] = []
+    if first_value:
+        collected.append(first_value)
+    for offset in range(1, 4):
+        index = start_index + offset
+        if index >= len(lines):
+            break
+        current = _clean_extracted_value(field_name, lines[index].strip())
+        if not current:
+            break
+        if _looks_like_followup_label(current) and not _is_allowed_subline(field_name, current):
+            break
+        collected.append(current)
+        if field_name != "consignee_name_address" and len(" ".join(collected)) >= 90:
+            break
+    combined = " | ".join(item for item in collected if item).strip(" |")
+    if field_name == "consignee_name_address" and not _looks_like_party_address_value(combined):
+        return ""
+    return combined
+
+
+def _is_allowed_subline(field_name: str, line: str) -> bool:
+    normalized = _normalize_simple(line)
+    if field_name == "beneficiary_bank":
+        return any(token in normalized for token in ("swift", "account", "iban", "beneficiary"))
+    if field_name == "payment_term":
+        return any(token in normalized for token in ("tt", "lc", "days", "advance", "against"))
+    return False
+
+
+def _looks_like_followup_label(line: str) -> bool:
+    stripped = str(line or "").strip()
+    if not stripped:
+        return False
+    if re.match(r"^[A-Za-z][A-Za-z /&().-]{1,32}\s*[:：]\s*", stripped):
+        return True
+    normalized = _normalize_simple(stripped)
+    normalized = normalized.rstrip(":")
+    for aliases in BUILTIN_FIELD_ALIASES.values():
+        for alias in aliases:
+            normalized_alias = _normalize_simple(alias)
+            if not normalized_alias:
+                continue
+            if normalized == normalized_alias:
+                return True
+            if normalized.startswith(normalized_alias) and len(normalized.split()) <= max(4, len(normalized_alias.split()) + 1):
+                remainder = normalized[len(normalized_alias):].strip()
+                if not remainder or remainder in {"no", "number"}:
+                    return True
+    return False
+
+
+def _clean_extracted_value(field_name: str, value: str) -> str:
+    candidate = str(value or "").strip()
+    candidate = re.sub(r"^[\s:?#\-–—_]+", "", candidate).strip()
+    candidate = re.sub(r"\s{2,}", " ", candidate)
+    if field_name in {"amount", "prepayment_amount", "total_amount", "unit_price"}:
+        money_match = re.search(r"([A-Z]{3}\s*)?[\$€¥]?\s?\d[\d,]*(?:\.\d{1,4})?", candidate, flags=re.I)
+        if money_match:
+            return candidate[money_match.start():].strip()
+    return candidate[:220].strip()
+
+
+def _looks_like_party_address_value(value: str) -> bool:
+    lowered = str(value or "").lower()
+    if not lowered:
+        return False
+    company_markers = ("co.", "ltd", "llc", "corp", "company", "limited", "inc", "group")
+    address_markers = ("road", "street", "st.", "ave", "avenue", "building", "room", "district", "city", "province", "china", "usa", "hong kong")
+    contact_markers = ("tel", "phone", "email", "@", "fax")
+    return (
+        any(token in lowered for token in company_markers) and any(token in lowered for token in address_markers)
+    ) or any(token in lowered for token in contact_markers)
+
+
+def _estimate_fast_match_confidence(field_name: str, line: str, alias: str, value: str, used_followup_lines: bool) -> float:
+    confidence = 0.9
+    alias_token_count = len(_normalize_simple(alias).split())
+    confidence += min(0.04, alias_token_count * 0.01)
+    if alias_token_count <= 1:
+        confidence -= 0.03
+    if _normalize_simple(line).startswith(_normalize_simple(alias)):
+        confidence += 0.04
+    if ":" in line or "#" in line:
+        confidence += 0.02
+    if used_followup_lines:
+        confidence -= 0.04
+    if field_name == "consignee_name_address" and "|" in value:
+        confidence -= 0.03
+    if field_name == "payment_term" and len(value) >= 15:
+        confidence += 0.01
+    return round(max(0.72, min(0.98, confidence)), 2)
 
 
 def _is_contract_label_line(line: str, alias: str) -> bool:

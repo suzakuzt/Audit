@@ -274,6 +274,8 @@ def _extract_with_paddle_remote_ocr(content: bytes) -> tuple[str, int, dict[str,
 
 def _ocr_engines_in_order(preference: str) -> list[str]:
     normalized = str(preference or "").strip().lower()
+    if not normalized:
+        return ["paddleocr", "llm_ocr"]
     if normalized == "llm_first":
         return ["llm_ocr", "paddleocr"]
     if normalized == "paddle_first":

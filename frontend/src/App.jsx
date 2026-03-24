@@ -1,11 +1,73 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+﻿import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import PromptLearningCenter from './PromptLearningCenter';
+import { Component } from 'react';
 
 const CORE_FIELDS = ['factory_no', 'contract_no', 'consignee_name_address', 'product_name', 'weight', 'unit_price', 'amount', 'beneficiary_bank', 'prepayment_amount', 'trade_term', 'total_weight', 'total_amount', 'hs_code', 'payment_term', 'port_of_origin', 'port_of_destination', 'shelf_life', 'shipment_date'];
+
+const CONTRACT_TEMPLATE_FIELDS = [...CORE_FIELDS, 'unit'];
+const INVOICE_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'port_of_origin', 'port_of_destination', 'payment_term', 'trade_term', 'container_no', 'product_name', 'box_count', 'net_weight', 'gross_weight', 'unit_price', 'total_amount', 'prepayment_amount', 'balance_amount', 'contract_no', 'country_of_dispatch', 'vessel_name', 'product_category', 'hs_code', 'total_box_count', 'total_net_weight', 'total_gross_weight', 'seal_no', 'slaughter_date', 'production_date', 'shelf_life'];
+const PACKING_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'port_of_origin', 'port_of_destination', 'container_no', 'product_name', 'box_count', 'net_weight', 'gross_weight', 'contract_no', 'vessel_name', 'production_date', 'shelf_life', 'factory_no', 'product_category', 'total_box_count', 'total_net_weight', 'total_gross_weight', 'seal_no', 'slaughter_date'];
+const NO_WOOD_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'container_no', 'product_name', 'box_count', 'net_weight', 'gross_weight', 'contract_no', 'product_category', 'vessel_name', 'port_of_origin', 'port_of_destination', 'seal_no', 'slaughter_date', 'production_date', 'shelf_life'];
+const BATCH_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'port_of_origin', 'port_of_destination', 'container_no', 'seal_no', 'slaughter_date', 'production_date', 'shelf_life', 'product_name', 'batch_no', 'box_count', 'net_weight', 'gross_weight'];
+const ORIGIN_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'invoice_date', 'port_of_destination', 'box_count', 'product_name', 'container_no', 'net_weight', 'gross_weight', 'hs_code', 'product_category', 'total_box_count', 'total_net_weight', 'total_gross_weight', 'vessel_name'];
+const HEALTH_TEMPLATE_FIELDS = ['consignee_name_address', 'export_country', 'port_of_destination', 'port_of_origin', 'container_no', 'seal_no', 'hs_code', 'product_name', 'origin_country', 'brand', 'batch_no', 'production_date', 'slaughter_date', 'cut_date', 'shelf_life', 'slaughterhouse_info', 'processing_plant_info', 'cold_storage_info', 'total_package_count', 'total_net_weight', 'total_gross_weight'];
+const BL_TEMPLATE_FIELDS = ['bl_no', 'consignee_name_address', 'notify_party_name_address', 'vessel_voyage', 'port_of_origin', 'port_of_destination', 'discharge_port', 'total_box_count', 'product_name', 'total_gross_weight', 'container_no', 'container_seal_no', 'issue_date', 'shipment_date', 'hs_code', 'health_cert_seal_no', 'net_weight', 'total_net_weight'];
+const HALAL_TEMPLATE_FIELDS = ['invoice_no', 'consignee_name_address', 'port_of_origin', 'port_of_destination', 'slaughter_date', 'production_date', 'product_name', 'brand', 'box_count', 'shelf_life', 'net_weight', 'gross_weight', 'container_no'];
+const BUILTIN_TEMPLATE_IDS = new Set(['core_fields', 'contract_template', 'invoice_template', 'packing_template', 'no_wood_template', 'batch_template', 'origin_template', 'health_template', 'bl_template', 'halal_template', 'all_fields']);
 
 const FIELD_PRESETS = [
   { id: 'core_fields', label: '\u6838\u5fc3\u5b57\u6bb5', fields: CORE_FIELDS },
   { id: 'all_fields', label: '\u5168\u90e8\u5b57\u6bb5', fields: 'ALL' },
+];
+
+const DEFAULT_TEMPLATES = [
+  { id: 'core_fields', name: '核心字段', fields: CORE_FIELDS },
+  {
+    id: 'contract_template',
+    name: '合同模板',
+    fields: CONTRACT_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'invoice_template',
+    name: '发票模板',
+    fields: INVOICE_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'packing_template',
+    name: '装箱单模板',
+    fields: PACKING_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'no_wood_template',
+    name: '无木制装箱单模板',
+    fields: NO_WOOD_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'batch_template',
+    name: '批次清单模板',
+    fields: BATCH_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'origin_template',
+    name: '原产地证书模板',
+    fields: ORIGIN_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'health_template',
+    name: '卫生证模板',
+    fields: HEALTH_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'bl_template',
+    name: '提单模板',
+    fields: BL_TEMPLATE_FIELDS,
+  },
+  {
+    id: 'halal_template',
+    name: '清真证书模板',
+    fields: HALAL_TEMPLATE_FIELDS,
+  },
+  { id: 'all_fields', name: '自定义', fields: 'ALL' },
 ];
 
 const EXTRACTION_MODES = [
@@ -77,10 +139,10 @@ const EMPTY_CONFIG = {
   llm_model: 'deepseek-chat',
   ocr_model: 'deepseek-chat',
   llm_timeout: 180,
-  use_alias_active: true,
+  use_alias_active: false,
   use_rule_active: true,
   enable_ocr: true,
-  force_ocr: false,
+  force_ocr: true,
   focus_fields: CORE_FIELDS,
   focus_labels: {},
   model_options: [
@@ -187,26 +249,26 @@ function extractionMarker(doc) {
   if (sourceKind === 'scan_ocr' && ocrStatus === 'applied') {
     if (ocrEngine === 'paddleocr') {
       return decisionMode === 'alias_fast_path'
-        ? '\u767e\u5ea6 PaddleOCR \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
-        : '\u767e\u5ea6 PaddleOCR';
+        ? '\u767e\u5ea6 PaddleOCR -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
+        : '\u767e\u5ea6 PaddleOCR -> DeepSeek \u5904\u7406';
     }
     return decisionMode === 'alias_fast_path'
-      ? 'OCR \u8bc6\u522b \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
-      : 'OCR \u8bc6\u522b';
+      ? 'OCR \u8bc6\u522b -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
+      : 'OCR \u8bc6\u522b -> DeepSeek \u5904\u7406';
   }
   if (sourceKind === 'scan_like' && ocrStatus === 'failed') {
-    return 'OCR \u5931\u8d25';
+    return 'OCR \u5931\u8d25\uff0c\u672a\u5b8c\u6210 DeepSeek \u5904\u7406';
   }
   if (decisionMode === 'alias_fast_path') {
-    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d';
+    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d';
   }
   if (sourceKind === 'digital_text') {
-    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6';
+    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406';
   }
   if (sourceKind === 'scan_like') {
-    return '\u626b\u63cf\u4ef6 \u00b7 \u5f85OCR';
+    return '\u626b\u63cf\u4ef6\uff0c\u7b49\u5f85\u767e\u5ea6 PaddleOCR';
   }
-  return '\u6807\u51c6\u6587\u672c\u63d0\u53d6';
+  return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406';
 }
 
 function selectedPresetId(selectedFields, allFields) {
@@ -216,6 +278,52 @@ function selectedPresetId(selectedFields, allFields) {
     if ([...presetFields].sort().join('|') === normalized) return preset.id;
   }
   return 'custom';
+}
+
+function normalizeTemplateFields(fields, allFields) {
+  if (fields === 'ALL') return 'ALL';
+  const allowed = new Set(allFields || []);
+  return (fields || []).filter((field) => allowed.has(field));
+}
+
+function mergeTemplatesWithDefaults(storedTemplates, allFields) {
+  const normalizedDefaults = DEFAULT_TEMPLATES.map((template) => ({
+    ...template,
+    fields: normalizeTemplateFields(template.fields, allFields),
+  })).filter((template) => template.fields === 'ALL' || template.fields.length);
+
+  const stored = Array.isArray(storedTemplates) ? storedTemplates : [];
+  const customTemplates = stored
+    .map((template) => ({
+      id: String(template.id || ''),
+      name: String(template.name || '').trim() || '未命名模板',
+      fields: normalizeTemplateFields(template.fields, allFields),
+    }))
+    .filter((template) => template.id && !BUILTIN_TEMPLATE_IDS.has(template.id))
+    .filter((template) => template.fields === 'ALL' || template.fields.length);
+
+  const mergedBuiltins = normalizedDefaults.map((template) => {
+    const matched = stored.find((item) => String(item?.id || '') === template.id);
+    if (!matched || template.fields === 'ALL') return template;
+    const mergedFields = [...new Set([...(Array.isArray(matched.fields) ? matched.fields : []), ...template.fields])];
+    return {
+      ...template,
+      name: String(matched.name || '').trim() || template.name,
+      fields: normalizeTemplateFields(mergedFields, allFields),
+    };
+  });
+
+  return [...mergedBuiltins, ...customTemplates];
+}
+
+function countTemplateLevels(fields, allFields, fieldLevels) {
+  const resolved = fields === 'ALL' ? allFields : fields;
+  return (resolved || []).reduce((acc, field) => {
+    const level = Number(fieldLevels?.[field] || 2);
+    if (level === 1) acc.level1 += 1;
+    else acc.level2 += 1;
+    return acc;
+  }, { level1: 0, level2: 0 });
 }
 
 function collectEvidence(doc, field, extraTerms = []) {
@@ -475,6 +583,8 @@ function buildReviewWorkbench(documents, focusFields, focusLabels) {
         uncertain: Boolean(mapping.uncertain || (doc.uncertain_fields || []).includes(field)),
         sourceKind: String(doc.raw_text_result?.metadata?.source_kind || ''),
         aliasHit,
+        isMismatch: manual.match_status === 'mismatched',
+        reviewNote: String(manual.review_note || ''),
         semanticBlock: String(mapping.semantic_block || ''),
         semanticCandidateClass: String(mapping.semantic_candidate_class || ''),
         candidateStandardFields: Array.isArray(mapping.candidate_standard_fields) ? mapping.candidate_standard_fields.filter(Boolean) : [],
@@ -567,6 +677,20 @@ function buildReviewWorkbench(documents, focusFields, focusLabels) {
   };
 }
 
+function summarizeReviewDecisions(rows) {
+  const total = rows.length;
+  const mismatched = rows.filter((row) => row.isMismatch).length;
+  const matched = total - mismatched;
+  const withNotes = rows.filter((row) => String(row.reviewNote || '').trim()).length;
+  return {
+    total,
+    matched,
+    mismatched,
+    withNotes,
+    accuracy: total ? formatRate(matched, total) : '-',
+  };
+}
+
 function mergeByStandardField(items) {
   const merged = new Map();
   (items || []).forEach((item) => {
@@ -601,7 +725,42 @@ function buildFeedbackDrafts(analysis) {
   return next;
 }
 
-function App() {
+class AppErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, message: '' };
+  }
+
+  static getDerivedStateFromError(error) {
+    return {
+      hasError: true,
+      message: String(error?.message || error || '页面渲染失败'),
+    };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('App render failed', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main className="page-shell">
+          <section className="hero-card">
+            <h1>{TEXT.title}</h1>
+            <div className="warn-box">页面恢复时出现异常：{this.state.message}</div>
+            <div className="action-row top-gap-small">
+              <button type="button" onClick={() => window.location.reload()}>重新加载页面</button>
+            </div>
+          </section>
+        </main>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function AppContent() {
   const [config, setConfig] = useState(EMPTY_CONFIG);
   const [learningConfig, setLearningConfig] = useState(EMPTY_LEARNING_CONFIG);
   const [loading, setLoading] = useState(true);
@@ -614,6 +773,10 @@ function App() {
   const [priorityFields, setPriorityFields] = useState([]);
   const [extractionMode, setExtractionMode] = useState('bundle');
   const [singleDocType, setSingleDocType] = useState('\u81ea\u52a8\u5224\u65ad');
+  const [templates, setTemplates] = useState(DEFAULT_TEMPLATES);
+  const [selectedTemplateId, setSelectedTemplateId] = useState('core_fields');
+  const [templateEditorOpen, setTemplateEditorOpen] = useState(false);
+  const [templateDraft, setTemplateDraft] = useState(null);
   const [resultData, setResultData] = useState(null);
   const [saveFeedback, setSaveFeedback] = useState(null);
   const [error, setError] = useState('');
@@ -627,6 +790,38 @@ function App() {
   const [learningStatus, setLearningStatus] = useState({ loading: false, message: '' });
   const [expandedReviewGroups, setExpandedReviewGroups] = useState({});
   const pollTimer = useRef(null);
+  const allFieldKeys = useMemo(
+    () => Object.keys(config.focus_labels || {}).sort((left, right) => {
+      const leftLevel = Number(config.field_levels?.[left] || 2);
+      const rightLevel = Number(config.field_levels?.[right] || 2);
+      if (leftLevel !== rightLevel) return leftLevel - rightLevel;
+      return String(config.focus_labels?.[left] || left).localeCompare(String(config.focus_labels?.[right] || right), 'zh-CN');
+    }),
+    [config.focus_labels, config.field_levels],
+  );
+  const selectedTemplate = useMemo(
+    () => templates.find((template) => template.id === selectedTemplateId) || templates[0] || null,
+    [templates, selectedTemplateId],
+  );
+  const currentPreset = useMemo(() => selectedPresetId(focusFields, allFieldKeys), [focusFields, allFieldKeys]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const normalizedDefaults = mergeTemplatesWithDefaults([], allFieldKeys);
+
+    const restorePageState = () => {
+      setTemplates((prev) => (Array.isArray(prev) && prev.length ? prev : normalizedDefaults));
+      setSelectedTemplateId((prev) => {
+        if (prev && templates.some((template) => template.id === prev)) return prev;
+        return normalizedDefaults[0]?.id || 'core_fields';
+      });
+    };
+
+    window.addEventListener('pageshow', restorePageState);
+    return () => {
+      window.removeEventListener('pageshow', restorePageState);
+    };
+  }, [allFieldKeys, templates]);
 
   useEffect(() => {
     let active = true;
@@ -666,6 +861,35 @@ function App() {
       if (pollTimer.current) clearTimeout(pollTimer.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (!allFieldKeys.length || typeof window === 'undefined') return;
+    try {
+      const raw = window.localStorage.getItem('audit-field-templates');
+      if (!raw) {
+        setTemplates(mergeTemplatesWithDefaults([], allFieldKeys));
+        return;
+      }
+      const parsed = JSON.parse(raw);
+      const nextTemplates = mergeTemplatesWithDefaults(parsed, allFieldKeys);
+      setTemplates(nextTemplates.length ? nextTemplates : mergeTemplatesWithDefaults([], allFieldKeys));
+    } catch (error) {
+      console.warn('Failed to load field templates', error);
+      setTemplates(mergeTemplatesWithDefaults([], allFieldKeys));
+    }
+  }, [allFieldKeys]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('audit-field-templates', JSON.stringify(templates));
+  }, [templates]);
+
+  useEffect(() => {
+    if (!templates.length) return;
+    if (!templates.some((template) => template.id === selectedTemplateId)) {
+      setSelectedTemplateId(templates[0].id);
+    }
+  }, [templates, selectedTemplateId]);
 
   useEffect(() => {
     let active = true;
@@ -732,8 +956,11 @@ function App() {
     };
   }, [resultData, learningPrompts, learningPromptFlags, promptModalOpen]);
 
-  const allFieldKeys = useMemo(() => Object.keys(config.focus_labels || {}), [config.focus_labels]);
-  const currentPreset = useMemo(() => selectedPresetId(focusFields, allFieldKeys), [focusFields, allFieldKeys]);
+  useEffect(() => {
+    if (!selectedTemplate || !allFieldKeys.length) return;
+    const nextFields = selectedTemplate.fields === 'ALL' ? allFieldKeys : selectedTemplate.fields;
+    setFocusFields(nextFields);
+  }, [selectedTemplate, allFieldKeys]);
 
   function updateFileStatuses(nextStatuses) {
     setStatusMap((prev) => ({ ...prev, ...nextStatuses }));
@@ -756,6 +983,64 @@ function App() {
 
   function applyPreset(preset) {
     setFocusFields(preset.fields === 'ALL' ? allFieldKeys : preset.fields);
+  }
+
+  function openTemplateEditor(mode = 'edit') {
+    if (mode === 'create') {
+      setTemplateDraft({
+        id: `custom_${Date.now()}`,
+        name: '新模板',
+        fields: [...focusFields],
+      });
+    } else if (selectedTemplate) {
+      setTemplateDraft({
+        id: selectedTemplate.id,
+        name: selectedTemplate.name,
+        fields: selectedTemplate.fields === 'ALL' ? 'ALL' : [...selectedTemplate.fields],
+      });
+    }
+    setTemplateEditorOpen(true);
+  }
+
+  function toggleTemplateDraftField(field) {
+    setTemplateDraft((prev) => {
+      if (!prev || prev.fields === 'ALL') return prev;
+      const exists = prev.fields.includes(field);
+      return {
+        ...prev,
+        fields: exists ? prev.fields.filter((item) => item !== field) : [...prev.fields, field],
+      };
+    });
+  }
+
+  function updateTemplateDraft(key, value) {
+    setTemplateDraft((prev) => (prev ? { ...prev, [key]: value } : prev));
+  }
+
+  function saveTemplateDraft() {
+    if (!templateDraft) return;
+    const nextTemplate = {
+      id: templateDraft.id,
+      name: templateDraft.name.trim() || '未命名模板',
+      fields: templateDraft.fields === 'ALL' ? 'ALL' : normalizeTemplateFields(templateDraft.fields, allFieldKeys),
+    };
+    setTemplates((prev) => {
+      const exists = prev.some((item) => item.id === nextTemplate.id);
+      return exists
+        ? prev.map((item) => (item.id === nextTemplate.id ? nextTemplate : item))
+        : [...prev, nextTemplate];
+    });
+    setSelectedTemplateId(nextTemplate.id);
+    setTemplateEditorOpen(false);
+  }
+
+  function deleteSelectedTemplate() {
+    if (!selectedTemplate) return;
+    setTemplates((prev) => {
+      const next = prev.filter((item) => item.id !== selectedTemplate.id);
+      return next.length ? next : prev;
+    });
+    setTemplateEditorOpen(false);
   }
 
   function buildStatusMap(fileStatuses = []) {
@@ -999,6 +1284,53 @@ function App() {
     }
   }
 
+  function updateReviewMismatch(docFilename, field, checked) {
+    setResultData((prev) => {
+      if (!prev) return prev;
+      const docs = cloneDocuments(prev.documents || []);
+      const doc = docs.find((item) => item.filename === docFilename);
+      if (!doc) return prev;
+      if (!Array.isArray(doc.manual_confirmation_rows)) doc.manual_confirmation_rows = [];
+      let manual = doc.manual_confirmation_rows.find((item) => item.standard_field === field);
+      if (!manual) {
+        manual = {
+          standard_field: field,
+          standard_label_cn: config.focus_labels?.[field] || field,
+          ai_value: '',
+          confirmed_value: '',
+          promote_alias: false,
+        };
+        doc.manual_confirmation_rows.push(manual);
+      }
+      manual.match_status = checked ? 'mismatched' : 'matched';
+      return { ...prev, documents: docs };
+    });
+  }
+
+  function updateReviewNote(docFilename, field, reviewNote) {
+    setResultData((prev) => {
+      if (!prev) return prev;
+      const docs = cloneDocuments(prev.documents || []);
+      const doc = docs.find((item) => item.filename === docFilename);
+      if (!doc) return prev;
+      if (!Array.isArray(doc.manual_confirmation_rows)) doc.manual_confirmation_rows = [];
+      let manual = doc.manual_confirmation_rows.find((item) => item.standard_field === field);
+      if (!manual) {
+        manual = {
+          standard_field: field,
+          standard_label_cn: config.focus_labels?.[field] || field,
+          ai_value: '',
+          confirmed_value: '',
+          promote_alias: false,
+          match_status: 'matched',
+        };
+        doc.manual_confirmation_rows.push(manual);
+      }
+      manual.review_note = reviewNote;
+      return { ...prev, documents: docs };
+    });
+  }
+
   async function handleSave() {
     if (!resultData?.documents?.length) return;
     const docs = cloneDocuments(resultData.documents).map((doc) => {
@@ -1084,22 +1416,31 @@ function App() {
       valueRate: formatRate(valueHits, totalPairs),
     };
   }, [reviewWorkbench]);
+  const reviewDecisionSummary = useMemo(
+    () => summarizeReviewDecisions(reviewWorkbench.rows),
+    [reviewWorkbench.rows],
+  );
 
   function handleExportResults() {
     if (!hasReviewRows) return;
-    const docs = resultData?.documents || [];
     const exportRows = [
-      ['结果说明', '本次识别覆盖率统计'],
+      ['结果说明', '本次识别与人工复核结果'],
       ['整体字段识别率', `${recognitionSummary.fieldRate} (${recognitionSummary.fieldHits}/${recognitionSummary.totalPairs})`],
       ['字段值识别率', `${recognitionSummary.valueRate} (${recognitionSummary.valueHits}/${recognitionSummary.totalPairs})`],
+      ['人工复核准确率', reviewDecisionSummary.accuracy],
+      ['不一致数量', String(reviewDecisionSummary.mismatched)],
       [],
-      ['单据', '字段', ...docs.map((doc) => doc.filename)],
+      ['单据', '字段', '识别链路', '识别字段名', '识别值', '是否不一致', '备注'],
     ];
-    reviewWorkbench.groups.forEach((group) => {
+    reviewWorkbench.rows.forEach((row) => {
       exportRows.push([
-        extractionMode === 'bundle' ? '合同' : (singleDocType || '同品类'),
-        group.label,
-        ...group.rows.map((row) => (String(row.sourceFieldName || '').trim() ? '是' : '否')),
+        row.doc.filename,
+        row.label,
+        extractionMarker(row.doc),
+        row.sourceFieldName || '',
+        row.sourceValue || '',
+        row.isMismatch ? '是' : '否',
+        row.reviewNote || '',
       ]);
     });
     const stamp = new Date().toISOString().slice(0, 10);
@@ -1119,7 +1460,6 @@ function App() {
             <h1>{TEXT.title}</h1>
             <p>{'\u4e0a\u4f20\u6587\u4ef6\u540e\uff0c\u7cfb\u7edf\u4f1a\u5148\u81ea\u52a8\u63d0\u53d6\u5173\u952e\u5b57\u6bb5\u3002\u4f60\u53ea\u9700\u8981\u5feb\u901f\u6838\u5bf9\u6807\u8bb0\u201c\u5efa\u8bae\u786e\u8ba4\u201d\u7684\u7ed3\u679c\u5373\u53ef\u3002'}</p>
           </div>
-          <button type="button" className="secondary-btn hero-config-btn" onClick={openPromptCenter}>{TEXT.openPromptConfig}</button>
         </header>
 
         <form className="layout-stack" onSubmit={handleSubmit}>
@@ -1161,56 +1501,49 @@ function App() {
                     {(config.model_options || []).map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>
                 </div>
-                <div className="prompt-entry-card" onClick={openPromptCenter} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPromptCenter(); } }}>
-                  <div className="doc-name">{TEXT.openPromptConfig}</div>
-                  <p className="muted-text">{'\u8fd9\u91cc\u7ef4\u62a4 AI \u5b66\u4e60\u5ba1\u5355\u7684\u4e09\u7c7b\u6838\u5fc3\u89c4\u5219\uff1a\u5148\u5efa\u7acb\u57fa\u7840\u7406\u89e3\uff0c\u518d\u5224\u65ad\u5355\u636e\u7c7b\u578b\uff0c\u6700\u540e\u7406\u89e3\u5b57\u6bb5\u542b\u4e49\u3002'}</p>
-                  <button type="button" className="secondary-btn" onClick={(event) => { event.stopPropagation(); openPromptCenter(); }}>{TEXT.openPromptConfigAction}</button>
-                </div>
               </div>
             </section>
           </div>
 
           <section className="panel-card">
             <h3>{'\u63d0\u53d6\u65b9\u5f0f\u8bbe\u7f6e'}</h3>
-            <div className="mode-grid">
-              {EXTRACTION_MODES.map((mode) => (
-                <button key={mode.id} type="button" className={`mode-card ${extractionMode === mode.id ? 'active' : ''}`} onClick={() => setExtractionMode(mode.id)}>
-                  <span className="mode-title">{mode.label}</span>
-                  <span className="mode-desc">{mode.description}</span>
-                </button>
-              ))}
-            </div>
-            {extractionMode === 'single' ? (
-              <div className="single-doc-bar top-gap-small">
-                <label htmlFor="single_doc_type">{'\u5f53\u524d\u63d0\u53d6\u5355\u636e\u7c7b\u578b'}</label>
-                <select id="single_doc_type" value={singleDocType} onChange={(event) => setSingleDocType(event.target.value)}>
-                  {SINGLE_DOC_TYPES.map((item) => <option key={item} value={item}>{item}</option>)}
-                </select>
+            <div className="simple-settings">
+              <div>
+                <div className="section-head">
+                  <div>
+                    <label>{'\u5b57\u6bb5\u6a21\u677f'}</label>
+                  </div>
+                  <div className="template-actions">
+                    <button type="button" className="secondary-btn" onClick={() => openTemplateEditor('edit')} disabled={!selectedTemplate}>编辑模板</button>
+                    <button type="button" className="secondary-btn" onClick={() => openTemplateEditor('create')}>新建模板</button>
+                  </div>
+                </div>
+                <div className="template-list template-list-compact">
+                  {templates.map((template) => {
+                    const fieldCount = template.fields === 'ALL' ? allFieldKeys.length : template.fields.length;
+                    const levelCounts = countTemplateLevels(template.fields, allFieldKeys, config.field_levels);
+                    return (
+                      <button
+                        key={template.id}
+                        type="button"
+                        className={`template-item ${selectedTemplateId === template.id ? 'active' : ''}`}
+                        onClick={() => setSelectedTemplateId(template.id)}
+                      >
+                        <div className="template-item-main">
+                          <strong>{template.name}</strong>
+                          <span>{template.fields === 'ALL' ? '可自定义选择一级/二级字段' : `一级 ${levelCounts.level1} 个 / 二级 ${levelCounts.level2} 个`}</span>
+                        </div>
+                        <div className="template-item-meta">
+                          <span>{`${fieldCount} 个字段`}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            ) : null}
+            </div>
             <div className="field-setting-note top-gap-small">
-              {extractionMode === 'bundle'
-                ? '\u6574\u5957\u5355\u636e\uff1a\u9002\u5408\u628a\u5408\u540c\u3001\u53d1\u7968\u3001\u88c5\u7bb1\u5355\u7b49\u4e00\u6574\u5957\u4e1a\u52a1\u5355\u636e\u653e\u5728\u4e00\u8d77\uff0c\u4ece\u6574\u5957\u6587\u4ef6\u4e2d\u6c47\u603b\u63d0\u53d6\u5173\u952e\u5b57\u6bb5'
-                : '\u540c\u54c1\u7c7b\u5bf9\u6bd4\uff1a\u5c06\u540c\u4e00\u54c1\u7c7b\u7684\u5355\u636e\u653e\u5728\u4e00\u8d77\uff0c\u6309\u540c\u4e00\u6807\u51c6\u5b57\u6bb5\u5206\u7ec4\u663e\u793a\uff0c\u65b9\u4fbf\u76f4\u63a5\u5bf9\u6bd4\u5404\u4efd\u5355\u636e\u7684\u540c\u4e00\u5b57\u6bb5'}
-            </div>
-            <div className="preset-row top-gap-small">
-              {FIELD_PRESETS.map((preset) => (
-                <button key={preset.id} type="button" className={`preset-btn ${currentPreset === preset.id ? 'active' : ''}`} onClick={() => applyPreset(preset)}>
-                  {preset.label}
-                </button>
-              ))}
-              <button type="button" className={`preset-btn ${focusFields.length === 0 ? 'active' : ''}`} onClick={() => setFocusFields([])}>
-                {'\u53d6\u6d88\u5168\u9009'}
-              </button>
-              <span className={`preset-btn ghost ${currentPreset === 'custom' ? 'active' : ''}`}>{'\u81ea\u5b9a\u4e49'}</span>
-            </div>
-            <div className="field-grid">
-              {allFieldKeys.map((field) => (
-                <label key={field} className="field-chip">
-                  <input type="checkbox" checked={focusFields.includes(field)} onChange={() => toggleField(field)} />
-                  <span>{config.focus_labels[field] || field}</span>
-                </label>
-              ))}
+              {selectedTemplate ? `当前模板：${selectedTemplate.name}，共 ${focusFields.length} 个字段（一级 ${countTemplateLevels(selectedTemplate.fields, allFieldKeys, config.field_levels).level1} / 二级 ${countTemplateLevels(selectedTemplate.fields, allFieldKeys, config.field_levels).level2}）。` : `当前共 ${focusFields.length} 个字段。`}
             </div>
           </section>
 
@@ -1227,62 +1560,84 @@ function App() {
           <div className="section-head">
             <div>
               <h3>标准字段确认</h3>
-              <p>按单条结果直接核对和保存，先回到更直观、容易理解的处理方式。</p>
+              <p>默认按一致计入准确率，只在发现问题时勾选“不一致”并补充备注。</p>
             </div>
             <div className="section-actions">
               <button type="button" className="secondary-btn" onClick={handleExportResults}>导出结果</button>
-              <button type="button" className="secondary-btn" onClick={openPromptCenter}>提示词配置</button>
             </div>
           </div>
 
           <div className="summary-chip-row top-gap-small">
             <div className="summary-chip-card">
-              <span className="summary-label">待确认总数</span>
+              <span className="summary-label">验证总数</span>
               <strong>{reviewWorkbench.rows.length}</strong>
-              <span className="doc-meta">{`字段名识别 ${recognitionSummary.fieldRate} / 字段值识别 ${recognitionSummary.valueRate}`}</span>
+              <span className="doc-meta">{`字段名取到 ${recognitionSummary.fieldRate} / 字段值取到 ${recognitionSummary.valueRate}`}</span>
+            </div>
+            <div className="summary-chip-card">
+              <span className="summary-label">已取到值</span>
+              <strong>{recognitionSummary.valueHits}</strong>
+              <span className="doc-meta">{`未取到值 ${Math.max(0, reviewWorkbench.rows.length - recognitionSummary.valueHits)}`}</span>
+            </div>
+            <div className="summary-chip-card">
+              <span className="summary-label">当前准确度</span>
+              <strong>{reviewDecisionSummary.accuracy}</strong>
+              <span className="doc-meta">{`一致 ${reviewDecisionSummary.matched} / 不一致 ${reviewDecisionSummary.mismatched}`}</span>
+            </div>
+            <div className="summary-chip-card">
+              <span className="summary-label">已写备注</span>
+              <strong>{reviewDecisionSummary.withNotes}</strong>
+              <span className="doc-meta">勾选不一致后可补充原因</span>
             </div>
           </div>
 
           <div className="history-list top-gap">
             {reviewWorkbench.rows.map((row) => {
-              const reviewState = resolveReviewState(row);
+              const hasField = Boolean(normalizeText(row.sourceFieldName));
+              const hasValue = Boolean(String(row.sourceValue || '').trim());
               return (
                 <article className="history-item review-manual-card" key={row.key}>
                   <div className="review-manual-head">
                     <div>
                       <div className="doc-name">{row.doc.filename}</div>
-                      <div className="doc-meta">{`${row.label} / ${row.doc.doc_type || '-'}`}</div>
-                      <div className="doc-meta">{`识别方式：${extractionMarker(row.doc)}`}</div>
-                      <div className={`review-state ${reviewState.className}`}>{reviewState.label}</div>
+                      <div className="doc-meta">{row.label}</div>
                     </div>
-                    <button type="button" className="secondary-btn" onClick={() => setModalState({ doc: row.doc, field: row.field, extraTerms: row.candidates.map((item) => item.alias) })}>{TEXT.view}</button>
+                    <div className="candidate-wrap">
+                      <span className="candidate-tag ocr-source-tag">{extractionMarker(row.doc)}</span>
+                      <span className={`candidate-tag ${hasField ? '' : 'candidate-tag-muted'}`}>{hasField ? '已取到字段名' : '未取到字段名'}</span>
+                      <span className={`candidate-tag ${hasValue ? '' : 'candidate-tag-muted'}`}>{hasValue ? '已取到值' : '未取到值'}</span>
+                      <button
+                        type="button"
+                        className="secondary-btn"
+                        onClick={() => setModalState({ doc: row.doc, field: row.field, extraTerms: [] })}
+                      >
+                        查看
+                      </button>
+                    </div>
                   </div>
                   <div className="review-manual-grid">
-                    <label>
-                      <span>单据字段名</span>
-                      <input className="alias-input" value={row.sourceFieldName} placeholder="填写或修正字段名" onChange={(event) => updateAliasName(row.doc.filename, row.field, event.target.value)} />
-                    </label>
                     <div>
-                      <span className="summary-label">标准字段</span>
+                      <span>单据字段名</span>
+                      <div className="result-value">{row.sourceFieldName || '-'}</div>
+                    </div>
+                    <div>
                       <div className="result-value">{row.label}</div>
                     </div>
                     <div>
                       <span className="summary-label">提取值</span>
-                      <div className="result-value">{row.sourceValue || '-'}</div>
+                      <ExpandableValue value={row.sourceValue} />
                     </div>
-                    <div>
-                      <span className="summary-label">候选字段写法</span>
-                      <div className="candidate-wrap">
-                        {row.candidates.length ? row.candidates.map((item) => (
-                          <button type="button" className={`candidate-tag candidate-tag-button candidate-tag-muted ${normalizeText(row.sourceFieldName) === normalizeText(item.alias) ? 'active' : ''}`} key={`${row.key}:${item.alias}`} onClick={() => updateAliasName(row.doc.filename, row.field, item.alias)}>{item.alias}</button>
-                        )) : <span className="doc-meta">{TEXT.noCandidates}</span>}
-                      </div>
-                    </div>
-                    <div className="review-manual-actions">
-                      <label className="inline-check subtle-check review-checkbox-row">
-                        <input type="checkbox" checked={row.promoteAlias} onChange={(event) => updatePromoteAlias(row.doc.filename, row.field, event.target.checked)} />
-                        <span>记住此映射并用于后续识别</span>
+                    <div className="review-cell review-cell-note">
+                      <span className="summary-label">复核</span>
+                      <label className="review-checkbox-row">
+                        <input type="checkbox" checked={row.isMismatch} onChange={(event) => updateReviewMismatch(row.doc.filename, row.field, event.target.checked)} />
+                        <span>标记为不准确</span>
                       </label>
+                      <textarea
+                        className="review-note-input"
+                        value={row.reviewNote}
+                        placeholder="有问题时补充原因；不填也会按当前勾选状态计入准确率。"
+                        onChange={(event) => updateReviewNote(row.doc.filename, row.field, event.target.value)}
+                      />
                     </div>
                   </div>
                 </article>
@@ -1291,56 +1646,97 @@ function App() {
           </div>
 
           <div className="action-row top-gap">
-            <button type="button" onClick={handleSave}>保存确认结果</button>
+            <button type="button" onClick={handleExportResults}>导出验证结果</button>
           </div>
         </section>
         ) : null}
-        {saveFeedback ? (
-          <section className={`panel-card feedback-card ${saveFeedback.type || 'info'}`}>
-            <p>{saveFeedback.message}</p>
-            {saveFeedback.stats ? <div className="stats-row">{saveFeedback.stats.map((item) => <span className="stat-chip" key={item}>{item}</span>)}</div> : null}
-            {saveFeedback.duplicates?.length ? <p className="muted-text">{TEXT.duplicateHint} {saveFeedback.duplicates.map((item) => `${item.standard_field}: ${item.alias}`).join('; ')}</p> : null}
-          </section>
-        ) : null}
       </section>
 
-      {promptModalOpen ? (
-        <div className="modal-backdrop" onClick={() => setPromptModalOpen(false)}>
-          <div className="modal-card" onClick={(event) => event.stopPropagation()}>
-            <div className="modal-head">
-              <div>
-                <h3>{'\u63d0\u793a\u8bcd\u4f18\u5316\u4e2d\u5fc3'}</h3>
-                <p>{'\u5728\u8fd9\u91cc\u76f4\u63a5\u7ef4\u62a4\u201c\u5148\u7406\u89e3\u5b57\u6bb5\u610f\u4e49\uff0c\u518d\u6620\u5c04\u6807\u51c6\u5b57\u6bb5\u201d\u7684\u63d0\u793a\u8bcd\u3002'}</p>
-              </div>
-              <button type="button" className="secondary-btn" onClick={() => setPromptModalOpen(false)}>{TEXT.close}</button>
-            </div>
-            <PromptLearningCenter
-              promptCenterConfig={learningConfig}
-              documents={resultData?.documents || []}
-              promptFileName={config.prompt_file_name}
-              learningPrompts={learningPrompts}
-              learningPromptFlags={learningPromptFlags}
-              onPromptChange={updateLearningPrompt}
-              onPromptFlagChange={updateLearningPromptFlag}
-              focusFields={focusFields}
-              focusLabels={config.focus_labels}
-              priorityFields={priorityFields}
-              defaultFocusFields={config.focus_fields}
-              onFocusFieldsChange={setFocusFields}
-              onPriorityFieldsChange={setPriorityFields}
-              learningAnalysis={learningAnalysis}
-              learningDrafts={learningDrafts}
-              onDraftChange={updateLearningDraft}
-              onFieldDraftChange={updateFieldDraft}
-              learningStatus={learningStatus}
-              learningHistory={learningConfig.history}
-              onSave={handleLearningSave}
-            />
-          </div>
-        </div>
+      {templateEditorOpen && templateDraft ? (
+        <TemplateEditorModal
+          template={templateDraft}
+          allFieldKeys={allFieldKeys}
+          focusLabels={config.focus_labels}
+          fieldLevels={config.field_levels}
+          isEditingExisting={templates.some((item) => item.id === templateDraft.id)}
+          onClose={() => setTemplateEditorOpen(false)}
+          onChange={updateTemplateDraft}
+          onToggleField={toggleTemplateDraftField}
+          onClearFields={() => updateTemplateDraft('fields', [])}
+          onDelete={deleteSelectedTemplate}
+          onSave={saveTemplateDraft}
+        />
       ) : null}
       {modalState ? <LocatorModal doc={modalState.doc} field={modalState.field} focusLabels={config.focus_labels} extraTerms={modalState.extraTerms} onClose={() => setModalState(null)} /> : null}
     </main>
+  );
+}
+
+function TemplateEditorModal({ template, allFieldKeys, focusLabels, fieldLevels, isEditingExisting, onClose, onChange, onToggleField, onClearFields, onDelete, onSave }) {
+  const usingAllFields = template.fields === 'ALL';
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-card template-editor-modal" onClick={(event) => event.stopPropagation()}>
+        <div className="modal-head">
+          <div>
+            <h3>模板维护</h3>
+            <p>这里保留给你维护字段模板，主页面还是只做快速验证。</p>
+          </div>
+          <div className="template-actions">
+            {isEditingExisting ? <button type="button" className="secondary-btn" onClick={onDelete}>删除模板</button> : null}
+            <button type="button" className="secondary-btn" onClick={onClose}>取消</button>
+            <button type="button" onClick={onSave}>保存模板</button>
+          </div>
+        </div>
+
+        <div className="simple-settings">
+          <div>
+            <label htmlFor="template_name">模板名称</label>
+            <input id="template_name" type="text" value={template.name} onChange={(event) => onChange('name', event.target.value)} />
+          </div>
+          <div>
+            <label className="review-checkbox-row">
+              <input type="checkbox" checked={usingAllFields} onChange={(event) => onChange('fields', event.target.checked ? 'ALL' : [])} />
+              <span>使用全部字段</span>
+            </label>
+          </div>
+        </div>
+
+        {!usingAllFields ? (
+          <div className="template-field-list top-gap">
+            <div className="template-actions">
+              <button type="button" className="secondary-btn" onClick={onClearFields}>取消全选</button>
+            </div>
+            {allFieldKeys.map((field) => (
+              <label key={field} className="template-field-item">
+                <input type="checkbox" checked={template.fields.includes(field)} onChange={() => onToggleField(field)} />
+                <span>{`${Number(fieldLevels?.[field] || 2) === 1 ? '一级' : '二级'} · ${focusLabels?.[field] || field}`}</span>
+                <em>{field}</em>
+              </label>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function ExpandableValue({ value }) {
+  const text = String(value || '').trim();
+  const [expanded, setExpanded] = useState(false);
+
+  if (!text) return <div className="result-value">-</div>;
+  if (text.length <= 160) return <div className="result-value">{text}</div>;
+
+  return (
+    <div className="result-value">
+      {expanded ? text : `${text.slice(0, 160)}...`}
+      {' '}
+      <button type="button" className="secondary-btn" onClick={() => setExpanded((prev) => !prev)}>
+        {expanded ? '收起' : '展开'}
+      </button>
+    </div>
   );
 }
 
@@ -1428,6 +1824,14 @@ function LocatorModal({ doc, field, focusLabels, extraTerms, onClose }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AppErrorBoundary>
+      <AppContent />
+    </AppErrorBoundary>
   );
 }
 
