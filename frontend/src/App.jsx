@@ -245,30 +245,38 @@ function extractionMarker(doc) {
   const ocrStatus = String(meta.ocr_status || '');
   const ocrEngine = String(meta.ocr_engine || '');
   const decisionMode = String(extractionMeta.decision_mode || '');
+  const recognitionEngine = String(extractionMeta.recognition_engine || '');
+  const processingOrder = Array.isArray(meta.processing_order) ? meta.processing_order : [];
 
   if (sourceKind === 'scan_ocr' && ocrStatus === 'applied') {
-    if (ocrEngine === 'paddleocr') {
-      return decisionMode === 'alias_fast_path'
-        ? '\u767e\u5ea6 PaddleOCR -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
-        : '\u767e\u5ea6 PaddleOCR -> DeepSeek \u5904\u7406';
+    if (recognitionEngine === 'alias_fast_path' || decisionMode === 'alias_fast_path') {
+      return '先百度 PaddleOCR(异步) -> 再 alias 快速定位';
     }
-    return decisionMode === 'alias_fast_path'
-      ? 'OCR \u8bc6\u522b -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d'
-      : 'OCR \u8bc6\u522b -> DeepSeek \u5904\u7406';
+    return '先百度 PaddleOCR(异步) -> 再 DeepSeek 字段识别';
   }
+
   if (sourceKind === 'scan_like' && ocrStatus === 'failed') {
-    return 'OCR \u5931\u8d25\uff0c\u672a\u5b8c\u6210 DeepSeek \u5904\u7406';
+    return 'OCR 失败 -> DeepSeek 仅基于可用文本识别';
   }
   if (decisionMode === 'alias_fast_path') {
-    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406 \u00b7 alias \u5feb\u901f\u5b9a\u4f4d';
+    return '标准文本提取 -> alias 快速定位';
   }
-  if (sourceKind === 'digital_text') {
-    return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406';
+  if (recognitionEngine === 'deepseek_llm') {
+    if (processingOrder.includes('llm_direct')) {
+      return '标准文本提取 -> DeepSeek 字段识别';
+    }
+    return '文本提取 -> DeepSeek 字段识别';
+  }
+  if (sourceKind === 'digital_text' || processingOrder.includes('base_text_extract')) {
+    return '标准文本提取 -> DeepSeek 字段识别';
   }
   if (sourceKind === 'scan_like') {
-    return '\u626b\u63cf\u4ef6\uff0c\u7b49\u5f85\u767e\u5ea6 PaddleOCR';
+    return '扫描件，等待百度 PaddleOCR';
   }
-  return '\u6807\u51c6\u6587\u672c\u63d0\u53d6 -> DeepSeek \u5904\u7406';
+  if (ocrEngine === 'paddleocr') {
+    return '百度 PaddleOCR(异步)';
+  }
+  return '标准文本提取 -> DeepSeek 字段识别';
 }
 
 function selectedPresetId(selectedFields, allFields) {
@@ -347,8 +355,16 @@ function collectEvidence(doc, field, extraTerms = []) {
   return snippets;
 }
 
+function resolvePreviewPages(doc) {
+  const visualPages = Array.isArray(doc.visual_pages) ? doc.visual_pages : [];
+  const visualWithImages = visualPages.filter((page) => page?.image_data_url);
+  if (visualWithImages.length) return visualWithImages;
+  const metaPages = doc?.raw_text_result?.metadata?.ocr_preview_images;
+  return Array.isArray(metaPages) ? metaPages.filter((page) => page?.image_data_url) : [];
+}
+
 function bestVisualPage(doc, field, extraTerms = []) {
-  const pages = Array.isArray(doc.visual_pages) ? doc.visual_pages.filter((page) => page?.image_data_url) : [];
+  const pages = resolvePreviewPages(doc);
   if (!pages.length) return null;
   const mapping = (doc.standard_mappings || []).find((item) => item.standard_field === field) || {};
   const terms = [mapping.source_field_name, mapping.source_value, ...extraTerms].map((item) => normalizeSearchText(item)).filter(Boolean);
@@ -778,6 +794,7 @@ function AppContent() {
   const [templateEditorOpen, setTemplateEditorOpen] = useState(false);
   const [templateDraft, setTemplateDraft] = useState(null);
   const [resultData, setResultData] = useState(null);
+  const [submittedTemplateSnapshot, setSubmittedTemplateSnapshot] = useState(null);
   const [saveFeedback, setSaveFeedback] = useState(null);
   const [error, setError] = useState('');
   const [modalState, setModalState] = useState(null);
@@ -1092,6 +1109,11 @@ function AppContent() {
     fd.append('extraction_mode', extractionMode);
     fd.append('single_doc_type', singleDocType);
     fd.append('include_visual_assets', 'true');
+    setSubmittedTemplateSnapshot({
+      templateId: selectedTemplate?.id || '',
+      templateName: selectedTemplate?.name || '当前模板',
+      focusFields: [...focusFields],
+    });
     setResultData({ documents: [], loading_message: TEXT.extracting });
     updateFileStatuses(Object.fromEntries(files.map((file) => [file.name, { label: TEXT.queued, className: 'queued', detail: '' }] )));
     try {
@@ -1398,11 +1420,17 @@ function AppContent() {
   }
 
   const reviewWorkbench = useMemo(
-    () => buildReviewWorkbench(resultData?.documents || [], focusFields, config.focus_labels),
-    [resultData, focusFields, config.focus_labels],
+    () => buildReviewWorkbench(
+      resultData?.documents || [],
+      submittedTemplateSnapshot?.focusFields || focusFields,
+      config.focus_labels,
+    ),
+    [resultData, submittedTemplateSnapshot, focusFields, config.focus_labels],
   );
 
-  const hasReviewRows = reviewWorkbench.rows.length > 0;
+  const hasBoundResult = Boolean(resultData?.documents?.length && submittedTemplateSnapshot);
+  const resultTemplateMatchesSelection = !hasBoundResult || selectedTemplateId === submittedTemplateSnapshot?.templateId;
+  const hasReviewRows = resultTemplateMatchesSelection && reviewWorkbench.rows.length > 0;
 
   const recognitionSummary = useMemo(() => {
     const totalPairs = reviewWorkbench.rows.length;
@@ -1423,16 +1451,36 @@ function AppContent() {
 
   function handleExportResults() {
     if (!hasReviewRows) return;
+    const currentWorkbench = buildReviewWorkbench(
+      resultData?.documents || [],
+      submittedTemplateSnapshot?.focusFields || focusFields,
+      config.focus_labels,
+    );
+    const currentRecognitionSummary = (() => {
+      const totalPairs = currentWorkbench.rows.length;
+      const fieldHits = currentWorkbench.rows.filter((row) => normalizeText(row.sourceFieldName)).length;
+      const valueHits = currentWorkbench.rows.filter((row) => String(row.sourceValue || '').trim()).length;
+      return {
+        totalPairs,
+        fieldHits,
+        valueHits,
+        fieldRate: formatRate(fieldHits, totalPairs),
+        valueRate: formatRate(valueHits, totalPairs),
+      };
+    })();
+    const currentReviewDecisionSummary = summarizeReviewDecisions(currentWorkbench.rows);
     const exportRows = [
       ['结果说明', '本次识别与人工复核结果'],
-      ['整体字段识别率', `${recognitionSummary.fieldRate} (${recognitionSummary.fieldHits}/${recognitionSummary.totalPairs})`],
-      ['字段值识别率', `${recognitionSummary.valueRate} (${recognitionSummary.valueHits}/${recognitionSummary.totalPairs})`],
-      ['人工复核准确率', reviewDecisionSummary.accuracy],
-      ['不一致数量', String(reviewDecisionSummary.mismatched)],
+      ['模板', submittedTemplateSnapshot?.templateName || selectedTemplate?.name || '当前模板'],
+      ['整体字段识别率', `${currentRecognitionSummary.fieldRate} (${currentRecognitionSummary.fieldHits}/${currentRecognitionSummary.totalPairs})`],
+      ['字段值识别率', `${currentRecognitionSummary.valueRate} (${currentRecognitionSummary.valueHits}/${currentRecognitionSummary.totalPairs})`],
+      ['人工复核准确率', currentReviewDecisionSummary.accuracy],
+      ['一致数量', String(currentReviewDecisionSummary.matched)],
+      ['不一致数量', String(currentReviewDecisionSummary.mismatched)],
       [],
       ['单据', '字段', '识别链路', '识别字段名', '识别值', '是否不一致', '备注'],
     ];
-    reviewWorkbench.rows.forEach((row) => {
+    currentWorkbench.rows.forEach((row) => {
       exportRows.push([
         row.doc.filename,
         row.label,
@@ -1443,7 +1491,7 @@ function AppContent() {
         row.reviewNote || '',
       ]);
     });
-    const stamp = new Date().toISOString().slice(0, 10);
+    const stamp = new Date().toISOString().replace(/[:T]/g, '-').slice(0, 19);
     downloadTsv(`识别结果导出_${stamp}.xls`, exportRows);
   }
 
@@ -1459,6 +1507,9 @@ function AppContent() {
           <div>
             <h1>{TEXT.title}</h1>
             <p>{'\u4e0a\u4f20\u6587\u4ef6\u540e\uff0c\u7cfb\u7edf\u4f1a\u5148\u81ea\u52a8\u63d0\u53d6\u5173\u952e\u5b57\u6bb5\u3002\u4f60\u53ea\u9700\u8981\u5feb\u901f\u6838\u5bf9\u6807\u8bb0\u201c\u5efa\u8bae\u786e\u8ba4\u201d\u7684\u7ed3\u679c\u5373\u53ef\u3002'}</p>
+          </div>
+          <div className="section-actions">
+            <button type="button" className="secondary-btn" onClick={openPromptCenter}>{TEXT.openPromptConfig}</button>
           </div>
         </header>
 
@@ -1554,6 +1605,11 @@ function AppContent() {
 
         {error ? <div className="warn-box">{error}</div> : null}
         {resultData?.loading_message ? <div className="panel-card result-hint">{resultData.loading_message}</div> : null}
+        {hasBoundResult && !resultTemplateMatchesSelection ? (
+          <div className="panel-card result-hint">
+            {`当前结果是按“${submittedTemplateSnapshot.templateName}”提取的。切回该模板即可查看当前验证结果；如果要看其他模板，请重新发起提取。`}
+          </div>
+        ) : null}
 
 {hasReviewRows ? (
         <section className="panel-card compact-review-panel top-gap">
@@ -1592,8 +1648,7 @@ function AppContent() {
 
           <div className="history-list top-gap">
             {reviewWorkbench.rows.map((row) => {
-              const hasField = Boolean(normalizeText(row.sourceFieldName));
-              const hasValue = Boolean(String(row.sourceValue || '').trim());
+              const missingFieldName = !normalizeText(row.sourceFieldName);
               return (
                 <article className="history-item review-manual-card" key={row.key}>
                   <div className="review-manual-head">
@@ -1603,8 +1658,6 @@ function AppContent() {
                     </div>
                     <div className="candidate-wrap">
                       <span className="candidate-tag ocr-source-tag">{extractionMarker(row.doc)}</span>
-                      <span className={`candidate-tag ${hasField ? '' : 'candidate-tag-muted'}`}>{hasField ? '已取到字段名' : '未取到字段名'}</span>
-                      <span className={`candidate-tag ${hasValue ? '' : 'candidate-tag-muted'}`}>{hasValue ? '已取到值' : '未取到值'}</span>
                       <button
                         type="button"
                         className="secondary-btn"
@@ -1617,7 +1670,7 @@ function AppContent() {
                   <div className="review-manual-grid">
                     <div>
                       <span>单据字段名</span>
-                      <div className="result-value">{row.sourceFieldName || '-'}</div>
+                      <div className={`result-value ${missingFieldName ? 'result-value-missing' : ''}`}>{row.sourceFieldName || '未取到'}</div>
                     </div>
                     <div>
                       <div className="result-value">{row.label}</div>
@@ -1666,6 +1719,29 @@ function AppContent() {
           onDelete={deleteSelectedTemplate}
           onSave={saveTemplateDraft}
         />
+      ) : null}
+      {promptModalOpen ? (
+        <div className="modal-backdrop" onClick={() => setPromptModalOpen(false)}>
+          <div className="modal-card prompt-center-modal" onClick={(event) => event.stopPropagation()}>
+            <PromptLearningCenter
+              promptCenterConfig={learningConfig}
+              promptFileName={config.prompt_file_name}
+              learningPrompts={learningPrompts}
+              learningPromptFlags={learningPromptFlags}
+              onPromptChange={updateLearningPrompt}
+              onPromptFlagChange={updateLearningPromptFlag}
+              focusFields={focusFields}
+              focusLabels={config.focus_labels}
+              priorityFields={priorityFields}
+              defaultFocusFields={config.focus_fields || []}
+              onSave={handleLearningSave}
+              learningStatus={learningStatus}
+            />
+            <div className="action-row top-gap-small">
+              <button type="button" className="secondary-btn" onClick={() => setPromptModalOpen(false)}>{TEXT.close}</button>
+            </div>
+          </div>
+        </div>
       ) : null}
       {modalState ? <LocatorModal doc={modalState.doc} field={modalState.field} focusLabels={config.focus_labels} extraTerms={modalState.extraTerms} onClose={() => setModalState(null)} /> : null}
     </main>
@@ -1726,7 +1802,7 @@ function ExpandableValue({ value }) {
   const text = String(value || '').trim();
   const [expanded, setExpanded] = useState(false);
 
-  if (!text) return <div className="result-value">-</div>;
+  if (!text) return <div className="result-value result-value-missing">未取到</div>;
   if (text.length <= 160) return <div className="result-value">{text}</div>;
 
   return (

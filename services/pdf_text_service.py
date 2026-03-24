@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import base64
 import io
 import json
-import os
+import logging
 import shutil
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -17,12 +17,12 @@ from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
 from audit_system.config import settings
-from llm.client import LLMClient, LLMRuntimeConfig
+from llm.client import LLMRuntimeConfig
 
 
 MIN_VALID_TEXT_LENGTH = 40
-OCR_SYSTEM_PROMPT = "You are a precise OCR assistant. Transcribe all visible text from the document images. Preserve field labels, table headers, identifiers, amounts, dates, and page numbers. Return transcription only."
-OCR_USER_PROMPT = "Transcribe all visible text in page order. Prefix each page with [PAGE n]. If a page is hard to read, still return the text you can recognize."
+logger = logging.getLogger(__name__)
+PADDLE_OCR_ASYNC_JOB_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
 
 
 class PDFTextResult(BaseModel):
@@ -83,42 +83,51 @@ def extract_pdf_text(file_name: str, content: bytes, ocr_config: OCRRunConfig | 
             warnings.append("Base PDF text extraction was weak; OCR will be used when enabled.")
 
     resolved_ocr = ocr_config or OCRRunConfig()
+    remote_ocr_forced = (
+        bool(settings.force_remote_ocr_for_all_documents)
+        and bool(settings.paddle_ocr_api_token)
+    )
     text_was_usable_before_ocr = _is_text_usable(final_text)
     metadata: dict[str, Any] = {
         "fallback_used": not _is_text_usable(pdfplumber_text),
         "pdfplumber_text_length": len(pdfplumber_text.strip()),
         "pypdf_text_length": len(pypdf_text.strip()),
-        "ocr_status": "not_needed" if text_was_usable_before_ocr else ("pending" if resolved_ocr.enabled else "suggested"),
-        "ocr_engine_preference": resolved_ocr.engine_preference or settings.ocr_engine_preference,
+        "ocr_status": "pending" if (resolved_ocr.enabled or remote_ocr_forced) else ("not_needed" if text_was_usable_before_ocr else "suggested"),
+        "ocr_engine_preference": "paddle_only",
         "source_kind": "digital_text" if text_was_usable_before_ocr else "scan_like",
+        "remote_ocr_forced": remote_ocr_forced,
+        "processing_order": ["base_text_extract"],
     }
 
-    should_run_ocr = resolved_ocr.enabled and (resolved_ocr.force_ocr or not text_was_usable_before_ocr)
+    should_run_ocr = remote_ocr_forced or (resolved_ocr.enabled and (resolved_ocr.force_ocr or not text_was_usable_before_ocr))
     if should_run_ocr:
-        errors: list[str] = []
-        for engine in _ocr_engines_in_order(resolved_ocr.engine_preference):
-            try:
-                if engine == "paddleocr":
-                    ocr_text, ocr_page_count, ocr_metadata = _extract_with_paddle_ocr(content, resolved_ocr)
-                else:
-                    ocr_text, ocr_page_count, ocr_metadata = _extract_with_llm_ocr(content, resolved_ocr)
-                metadata.update(ocr_metadata)
-                if not _is_text_usable(ocr_text):
-                    errors.append(f"{engine} returned weak text")
-                    continue
-                final_text = ocr_text if resolved_ocr.force_ocr or len(ocr_text.strip()) >= len(final_text.strip()) else final_text
-                final_page_count = max(final_page_count, ocr_page_count)
-                extraction_method = engine if not extraction_method else f"{extraction_method}+{engine}"
+        try:
+            ocr_text, ocr_page_count, ocr_metadata = _extract_with_paddle_ocr(file_name, content, resolved_ocr)
+            metadata.update(ocr_metadata)
+            if not _is_text_usable(ocr_text):
+                warnings.append("OCR extraction failed: paddleocr returned weak text")
+                metadata["ocr_status"] = "failed"
+                metadata["processing_order"] = ["base_text_extract", "paddleocr_async_failed"]
+            else:
+                # Keep digital text and OCR text together so downstream LLM extraction can
+                # leverage both clean typed content and OCR-only fragments.
+                final_text = _merge_text_sources(final_text, ocr_text)
+                final_page_count = ocr_page_count
+                extraction_method = (
+                    f"{extraction_method}+paddleocr" if extraction_method in {"pdfplumber", "pypdf"} else "paddleocr"
+                )
                 metadata["ocr_status"] = "applied"
-                metadata["ocr_engine"] = engine
+                metadata["ocr_engine"] = "paddleocr"
                 metadata["source_kind"] = "scan_ocr"
-                break
-            except Exception as exc:
-                errors.append(f"{engine} failed: {exc}")
-        else:
-            if errors:
-                warnings.append("OCR extraction failed: " + " | ".join(errors))
-            metadata["ocr_status"] = "failed" if errors else "weak_result"
+                metadata["ocr_text_authoritative"] = False
+                metadata["hybrid_text_fusion"] = True
+                metadata["processing_order"] = ["base_text_extract", "paddleocr_async", "text_fusion"]
+        except Exception as exc:
+            warnings.append(f"OCR extraction failed: paddleocr failed: {exc}")
+            metadata["ocr_status"] = "failed"
+            metadata["processing_order"] = ["base_text_extract", "paddleocr_async_failed"]
+    else:
+        metadata["processing_order"] = ["base_text_extract", "llm_direct"]
 
     return PDFTextResult(
         file_name=file_name,
@@ -130,101 +139,139 @@ def extract_pdf_text(file_name: str, content: bytes, ocr_config: OCRRunConfig | 
         metadata=metadata,
     )
 
-
-def _extract_with_llm_ocr(content: bytes, ocr_config: OCRRunConfig) -> tuple[str, int, dict[str, str | int | bool | None]]:
-    temp_dir = settings.runtime_temp_dir / "ocr_pages" / uuid4().hex
-    temp_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        image_paths = _render_pdf_page_images_to_dir(content, temp_dir, max_pages=ocr_config.max_pages)
-        image_urls = [_image_path_to_data_url(path) for path in image_paths]
-        ocr_model = None
-        if ocr_config.llm_runtime_config:
-            ocr_model = ocr_config.llm_runtime_config.ocr_model or ocr_config.llm_runtime_config.model
-        client = LLMClient(runtime_config=ocr_config.llm_runtime_config, model=ocr_model)
-        response = client.transcribe_images(OCR_SYSTEM_PROMPT, OCR_USER_PROMPT, image_urls)
-        return response.text.strip(), len(image_paths), {
-            "ocr_pages_used": len(image_paths),
-            "ocr_model": client.model,
-        }
-    finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)
-
-
-def _extract_with_paddle_ocr(content: bytes, ocr_config: OCRRunConfig) -> tuple[str, int, dict[str, str | int | bool | None]]:
-    if settings.paddle_ocr_api_url and settings.paddle_ocr_api_token:
-        return _extract_with_paddle_remote_ocr(content)
-
-    paddle_python = settings.paddle_ocr_python_path
-    if not paddle_python.exists():
-        raise FileNotFoundError(f"PaddleOCR Python was not found: {paddle_python}")
-    temp_dir = settings.runtime_temp_dir / "ocr_pages" / uuid4().hex
-    temp_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        image_paths = _render_pdf_page_images_to_dir(content, temp_dir, max_pages=ocr_config.max_pages)
-        runner_path = Path(__file__).resolve().with_name("paddle_ocr_runner.py")
-        payload = json.dumps({
-            "image_paths": [str(path) for path in image_paths],
-            "lang": "en",
-        }, ensure_ascii=False)
-        paddle_cache = settings.runtime_temp_dir / "paddle_cache"
-        paddle_cache.mkdir(parents=True, exist_ok=True)
-        paddle_temp = paddle_cache / "temp"
-        paddle_temp.mkdir(parents=True, exist_ok=True)
-        completed = subprocess.run(
-            [str(paddle_python), str(runner_path)],
-            input=payload,
-            capture_output=True,
-            text=True,
-            check=True,
-            env={
-                **os.environ,
-                "PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK": "True",
-                "PADDLE_HOME": str(paddle_cache),
-                "XDG_CACHE_HOME": str(paddle_cache),
-                "HOME": str(paddle_cache),
-                "USERPROFILE": str(paddle_cache),
-                "LOCALAPPDATA": str(paddle_cache),
-                "TEMP": str(paddle_temp),
-                "TMP": str(paddle_temp),
-                "TMPDIR": str(paddle_temp),
-                "HF_HOME": str(paddle_cache / "hf_home"),
-                "HUGGINGFACE_HUB_CACHE": str(paddle_cache / "hf_home" / "hub"),
-                "MODELSCOPE_CACHE": str(paddle_cache / "modelscope"),
-                "PADDLE_PDX_MODEL_SOURCE": "BOS",
-            },
-        )
-        result = json.loads(completed.stdout or "{}")
-        return str(result.get("text", "") or "").strip(), int(result.get("page_count", 0) or 0), {
-            "ocr_pages_used": int(result.get("page_count", 0) or 0),
-            "ocr_model": "paddleocr",
-        }
-    finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+def _extract_with_paddle_ocr(file_name: str, content: bytes, ocr_config: OCRRunConfig) -> tuple[str, int, dict[str, Any]]:
+    if not settings.paddle_ocr_api_token:
+        raise RuntimeError("Remote PaddleOCR is required, but AUDIT_PADDLE_OCR_API_TOKEN is not configured.")
+    return _extract_with_paddle_remote_ocr(content)
 
 
 def _extract_with_paddle_remote_ocr(content: bytes) -> tuple[str, int, dict[str, Any]]:
-    encoded_file = base64.b64encode(content).decode("ascii")
-    payload = {
-        "file": encoded_file,
-        "fileType": 0,
-        "useDocOrientationClassify": False,
-        "useDocUnwarping": False,
-        "useChartRecognition": False,
+    job_url = _resolve_paddle_ocr_job_url()
+    headers = {"Authorization": f"bearer {settings.paddle_ocr_api_token}"}
+    data = {
+        "model": settings.paddle_ocr_model_name or "PaddleOCR-VL-1.5",
+        "optionalPayload": json.dumps(
+            {
+                "useDocOrientationClassify": False,
+                "useDocUnwarping": False,
+                "useChartRecognition": False,
+            }
+        ),
     }
-    headers = {
-        "Authorization": f"token {settings.paddle_ocr_api_token}",
-        "Content-Type": "application/json",
-    }
-    response = requests.post(
-        settings.paddle_ocr_api_url,
-        json=payload,
-        headers=headers,
-        timeout=max(1, int(settings.paddle_ocr_api_timeout or 180)),
+    logger.info(
+        "Submitting async PaddleOCR job url=%s model=%s bytes=%s timeout=%s",
+        job_url,
+        data["model"],
+        len(content),
+        max(1, int(settings.paddle_ocr_api_timeout or 180)),
     )
-    response.raise_for_status()
-    data = response.json()
-    result = data.get("result") or {}
-    parsing_results = result.get("layoutParsingResults") or []
+    with io.BytesIO(content) as file_obj:
+        response = requests.post(
+            job_url,
+            headers=headers,
+            data=data,
+            files={"file": ("document.pdf", file_obj, "application/pdf")},
+            timeout=max(1, int(settings.paddle_ocr_api_timeout or 180)),
+        )
+    response_snippet = response.text[:500] if response.text else ""
+    if response.status_code != 200:
+        raise RuntimeError(
+            f"Async PaddleOCR job submit failed with status {response.status_code}: {response_snippet}"
+        )
+    payload = response.json()
+    job_data = payload.get("data") or {}
+    job_id = str(job_data.get("jobId", "") or "")
+    if not job_id:
+        raise RuntimeError(f"Async PaddleOCR job submit returned no jobId: {payload}")
+    deadline = time.monotonic() + max(5, int(settings.paddle_ocr_api_timeout or 180))
+    poll_states: list[dict[str, Any]] = []
+    last_payload: dict[str, Any] = {}
+    while time.monotonic() < deadline:
+        query_response = requests.get(
+            f"{job_url}/{job_id}",
+            headers=headers,
+            timeout=max(1, int(settings.paddle_ocr_api_timeout or 180)),
+        )
+        query_response.raise_for_status()
+        last_payload = query_response.json()
+        query_data = last_payload.get("data") or {}
+        state = str(query_data.get("state", "") or "")
+        progress = query_data.get("extractProgress") or {}
+        poll_states.append(
+            {
+                "state": state,
+                "totalPages": progress.get("totalPages"),
+                "extractedPages": progress.get("extractedPages"),
+                "startTime": progress.get("startTime"),
+                "endTime": progress.get("endTime"),
+            }
+        )
+        if state == "done":
+            result_url = query_data.get("resultUrl") or {}
+            json_url = str(result_url.get("jsonUrl", "") or "")
+            if not json_url:
+                raise RuntimeError(f"Async PaddleOCR job completed without jsonUrl: {last_payload}")
+            return _build_paddle_async_ocr_result(
+                job_url=job_url,
+                job_id=job_id,
+                submit_status_code=response.status_code,
+                submit_request_id=response.headers.get("x-request-id") or response.headers.get("request-id") or "",
+                json_url=json_url,
+                poll_states=poll_states,
+            )
+        if state == "failed":
+            raise RuntimeError(str(query_data.get("errorMsg", "") or "Async PaddleOCR job failed."))
+        time.sleep(max(1, int(settings.paddle_ocr_poll_interval_seconds or 5)))
+    raise RuntimeError(f"Async PaddleOCR job polling timed out: {last_payload}")
+
+
+def _resolve_paddle_ocr_job_url() -> str:
+    configured = str(settings.paddle_ocr_job_url or settings.paddle_ocr_api_url or "").strip()
+    if configured and "/api/v2/ocr/jobs" in configured:
+        return configured
+    return PADDLE_OCR_ASYNC_JOB_URL
+
+
+def _build_paddle_async_ocr_result(
+    *,
+    job_url: str,
+    job_id: str,
+    submit_status_code: int,
+    submit_request_id: str,
+    json_url: str,
+    poll_states: list[dict[str, Any]],
+) -> tuple[str, int, dict[str, Any]]:
+    json_response = requests.get(json_url, timeout=max(1, int(settings.paddle_ocr_api_timeout or 180)))
+    json_response.raise_for_status()
+    parsing_results: list[dict[str, Any]] = []
+    for line in str(json_response.text or "").splitlines():
+        raw_line = line.strip()
+        if not raw_line:
+            continue
+        payload = json.loads(raw_line)
+        result = payload.get("result") or {}
+        for item in result.get("layoutParsingResults") or []:
+            if isinstance(item, dict):
+                parsing_results.append(item)
+    combined_text, page_count, preview_images = _extract_layout_parsing_text_and_visuals(parsing_results)
+    return combined_text, page_count, {
+        "ocr_api_called": True,
+        "ocr_api_mode": "aistudio_async_jobs",
+        "ocr_api_url": job_url,
+        "ocr_api_status_code": submit_status_code,
+        "ocr_api_request_id": submit_request_id,
+        "ocr_api_log_id": job_id,
+        "ocr_api_job_id": job_id,
+        "ocr_api_result_url": json_url,
+        "ocr_api_poll_states": poll_states,
+        "ocr_pages_used": page_count,
+        "ocr_model": "paddleocr-vl-remote-async",
+        "ocr_transport": "http-async",
+        "ocr_preview_images": preview_images,
+    }
+
+
+def _extract_layout_parsing_text_and_visuals(parsing_results: list[dict[str, Any]]) -> tuple[str, int, list[dict[str, Any]]]:
     markdown_texts: list[str] = []
     preview_images: list[dict[str, Any]] = []
     for index, item in enumerate(parsing_results, start=1):
@@ -243,47 +290,32 @@ def _extract_with_paddle_remote_ocr(content: bytes) -> tuple[str, int, dict[str,
             bbox = block.get("block_bbox") or []
             if not block_text or not isinstance(bbox, list) or len(bbox) != 4:
                 continue
-            blocks.append({
-                "text": block_text,
-                "x0": float(bbox[0] or 0),
-                "top": float(bbox[1] or 0),
-                "x1": float(bbox[2] or 0),
-                "bottom": float(bbox[3] or 0),
-                "label": str(block.get("block_label", "") or ""),
-            })
+            blocks.append(
+                {
+                    "text": block_text,
+                    "x0": float(bbox[0] or 0),
+                    "top": float(bbox[1] or 0),
+                    "x1": float(bbox[2] or 0),
+                    "bottom": float(bbox[3] or 0),
+                    "label": str(block.get("block_label", "") or ""),
+                }
+            )
         if image_url:
-            preview_images.append({
-                "page_number": index,
-                "image_data_url": image_url,
-                "page_width": int(pruned.get("width", 0) or 0),
-                "page_height": int(pruned.get("height", 0) or 0),
-                "words": [],
-                "blocks": blocks,
-            })
+            preview_images.append(
+                {
+                    "page_number": index,
+                    "image_data_url": image_url,
+                    "page_width": int(pruned.get("width", 0) or 0),
+                    "page_height": int(pruned.get("height", 0) or 0),
+                    "words": [],
+                    "blocks": blocks,
+                }
+            )
     combined_text = "\n\n".join(markdown_texts).strip()
     page_count = len(parsing_results)
     if not combined_text:
         raise RuntimeError("Remote PaddleOCR returned no markdown text.")
-    return combined_text, page_count, {
-        "ocr_pages_used": page_count,
-        "ocr_model": "paddleocr-vl-remote",
-        "ocr_transport": "http",
-        "ocr_preview_images": preview_images,
-    }
-
-
-def _ocr_engines_in_order(preference: str) -> list[str]:
-    normalized = str(preference or "").strip().lower()
-    if not normalized:
-        return ["paddleocr", "llm_ocr"]
-    if normalized == "llm_first":
-        return ["llm_ocr", "paddleocr"]
-    if normalized == "paddle_first":
-        return ["paddleocr", "llm_ocr"]
-    if normalized == "llm_only":
-        return ["llm_ocr"]
-    return ["paddleocr"]
-
+    return combined_text, page_count, preview_images
 
 def _resolve_pdftoppm_path() -> Path:
     if settings.pdftoppm_path.exists():
@@ -383,6 +415,20 @@ def _extract_with_pypdf(content: bytes) -> tuple[str, int, str | None]:
 def _pick_longer_text(*candidates: str) -> str:
     normalized = [str(candidate or "") for candidate in candidates]
     return max(normalized, key=lambda item: len(item.strip()), default="")
+
+
+def _merge_text_sources(base_text: str, ocr_text: str) -> str:
+    base = str(base_text or "").strip()
+    ocr = str(ocr_text or "").strip()
+    if not base:
+        return ocr
+    if not ocr:
+        return base
+    if ocr in base:
+        return base
+    if base in ocr:
+        return ocr
+    return f"{base}\n\n--- OCR SUPPLEMENT ---\n\n{ocr}"
 
 
 def _is_text_usable(text: str | None) -> bool:

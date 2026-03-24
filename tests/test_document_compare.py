@@ -1006,6 +1006,39 @@ def test_merge_visual_pages_with_fallback_injects_ocr_blocks() -> None:
     assert merged[0]['blocks'][0]['text'] == 'Contract No.: R 251/2025'
 
 
+def test_merge_visual_pages_with_fallback_backfills_missing_image_url() -> None:
+    from audit_system.api.routes.document_compare import _merge_visual_pages_with_fallback
+
+    merged = _merge_visual_pages_with_fallback(
+        [
+            {
+                'page_number': 1,
+                'image_data_url': '',
+                'page_width': 595,
+                'page_height': 842,
+                'words': [{'text': 'local-word'}],
+                'blocks': [],
+            }
+        ],
+        {
+            'ocr_preview_images': [
+                {
+                    'page_number': 1,
+                    'image_data_url': 'https://example.com/page-1.jpg',
+                    'page_width': 1191,
+                    'page_height': 1684,
+                    'words': [],
+                    'blocks': [],
+                }
+            ]
+        },
+    )
+
+    assert len(merged) == 1
+    assert merged[0]['image_data_url'] == 'https://example.com/page-1.jpg'
+    assert merged[0]['words'][0]['text'] == 'local-word'
+
+
 def test_process_uploaded_document_retries_with_ocr_when_focus_fields_are_missing(monkeypatch) -> None:
     from audit_system.api.routes.document_compare import _process_uploaded_document
     from llm.client import LLMRuntimeConfig
@@ -1103,4 +1136,3 @@ def test_process_uploaded_document_retries_with_ocr_when_focus_fields_are_missin
     assert document['raw_text_result']['metadata']['source_kind'] == 'scan_ocr'
     assert document['standard_mappings'][0]['source_value'] == 'OCR-001'
     assert document['extraction_metadata']['ocr_retry']['selected'] is True
-

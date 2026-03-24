@@ -74,15 +74,18 @@ def _merge_visual_pages_with_fallback(visual_pages: list[dict[str, Any]], metada
             continue
         has_local_words = isinstance(page.get("words"), list) and bool(page.get("words"))
         has_local_blocks = isinstance(page.get("blocks"), list) and bool(page.get("blocks"))
-        if has_local_words or has_local_blocks:
-            merged.append(page)
-            continue
+        has_local_layout = has_local_words or has_local_blocks
+        local_image_url = str(page.get("image_data_url") or "").strip()
+        fallback_image_url = str(fallback.get("image_data_url") or "").strip()
+
         merged.append({
             **page,
-            "page_width": int(fallback.get("page_width") or page.get("page_width") or 0),
-            "page_height": int(fallback.get("page_height") or page.get("page_height") or 0),
-            "words": fallback.get("words") if isinstance(fallback.get("words"), list) else [],
-            "blocks": fallback.get("blocks") if isinstance(fallback.get("blocks"), list) else [],
+            # If local rendering failed or returned empty URL, always backfill from OCR preview image.
+            "image_data_url": local_image_url or fallback_image_url,
+            "page_width": int((page.get("page_width") if has_local_layout else fallback.get("page_width")) or page.get("page_width") or fallback.get("page_width") or 0),
+            "page_height": int((page.get("page_height") if has_local_layout else fallback.get("page_height")) or page.get("page_height") or fallback.get("page_height") or 0),
+            "words": page.get("words") if has_local_words else (fallback.get("words") if isinstance(fallback.get("words"), list) else []),
+            "blocks": page.get("blocks") if has_local_blocks else (fallback.get("blocks") if isinstance(fallback.get("blocks"), list) else []),
         })
     return merged
 
@@ -133,7 +136,6 @@ def _process_uploaded_document(
             force_ocr=force_ocr_value,
             max_pages=settings.ocr_max_pages,
             llm_runtime_config=runtime_config,
-            engine_preference=settings.ocr_engine_preference,
         ),
     )
     visual_pages = build_pdf_visual_assets(content, max_pages=3) if include_visuals else []
@@ -230,7 +232,6 @@ def _maybe_retry_document_with_ocr(
             force_ocr=True,
             max_pages=settings.ocr_max_pages,
             llm_runtime_config=runtime_config,
-            engine_preference=settings.ocr_engine_preference,
         ),
     )
     retried_extraction = extract_document_with_options(
