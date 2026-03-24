@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import io
 import json
 import logging
@@ -80,7 +81,7 @@ def extract_pdf_text(file_name: str, content: bytes, ocr_config: OCRRunConfig | 
         final_page_count = max(pdfplumber_pages, pypdf_pages)
         extraction_method = "pdfplumber" if len(pdfplumber_text) >= len(pypdf_text) else "pypdf"
         if not _is_text_usable(final_text):
-            warnings.append("Base PDF text extraction was weak; OCR will be used when enabled.")
+            warnings.append("Base PDF text extraction was weak; system will try DeepSeek first, then fallback to OCR if needed.")
 
     resolved_ocr = ocr_config or OCRRunConfig()
     remote_ocr_forced = (
@@ -99,7 +100,7 @@ def extract_pdf_text(file_name: str, content: bytes, ocr_config: OCRRunConfig | 
         "processing_order": ["base_text_extract"],
     }
 
-    should_run_ocr = remote_ocr_forced or (resolved_ocr.enabled and (resolved_ocr.force_ocr or not text_was_usable_before_ocr))
+    should_run_ocr = remote_ocr_forced or (resolved_ocr.enabled and resolved_ocr.force_ocr)
     if should_run_ocr:
         try:
             ocr_text, ocr_page_count, ocr_metadata = _extract_with_paddle_ocr(file_name, content, resolved_ocr)
@@ -326,26 +327,57 @@ def _resolve_pdftoppm_path() -> Path:
     raise FileNotFoundError("pdftoppm.exe was not found, so OCR page rendering could not start.")
 
 
+def _resolve_pdftocairo_path() -> Path:
+    sibling = settings.pdfinfo_path.with_name("pdftocairo.exe")
+    if sibling.exists():
+        return sibling
+    fallback = Path(r"C:\Program Files\poppler\poppler-24.08.0\Library\bin\pdftocairo.exe")
+    if fallback.exists():
+        return fallback
+    raise FileNotFoundError("pdftocairo.exe was not found for page rendering fallback.")
+
+
 def _render_pdf_page_images_to_dir(content: bytes, temp_dir: Path, max_pages: int = 3) -> list[Path]:
     input_pdf = temp_dir / "input.pdf"
     input_pdf.write_bytes(content)
     output_prefix = temp_dir / "page"
+    pages_limit = str(max(1, max_pages))
     pdftoppm_path = _resolve_pdftoppm_path()
-    command = [
+    ppm_command = [
         str(pdftoppm_path),
         "-png",
         "-f",
         "1",
         "-l",
-        str(max(1, max_pages)),
+        pages_limit,
         str(input_pdf),
         str(output_prefix),
     ]
-    subprocess.run(command, check=True, capture_output=True, text=True)
-    image_paths = sorted(temp_dir.glob("page-*.png"))[: max(1, max_pages)]
-    if not image_paths:
-        raise RuntimeError("No OCR page images were rendered.")
-    return image_paths
+    try:
+        # Avoid locale decode issues on Windows stderr/stdout that can silently break image rendering.
+        subprocess.run(ppm_command, check=True, capture_output=True)
+        image_paths = sorted(temp_dir.glob("page-*.png"))[: max(1, max_pages)]
+        if image_paths:
+            return image_paths
+        raise RuntimeError("pdftoppm returned success but no PNG files were found.")
+    except Exception as ppm_error:
+        logger.warning("pdftoppm rendering failed, fallback to pdftocairo. error=%s", ppm_error)
+        cairo_path = _resolve_pdftocairo_path()
+        cairo_command = [
+            str(cairo_path),
+            "-png",
+            "-f",
+            "1",
+            "-l",
+            pages_limit,
+            str(input_pdf),
+            str(output_prefix),
+        ]
+        subprocess.run(cairo_command, check=True, capture_output=True)
+        image_paths = sorted(temp_dir.glob("page-*.png"))[: max(1, max_pages)]
+        if image_paths:
+            return image_paths
+        raise RuntimeError("No page images were rendered by pdftoppm/pdftocairo.")
 
 
 def _image_path_to_data_url(path: Path) -> str:

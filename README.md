@@ -1,6 +1,6 @@
 ﻿# Audit System
 
-一个聚焦审单场景的批量核心字段提取验证器，当前已包含批量上传、核心字段提取、人工确认、准确率评估、批量汇总统计，以及 Prompt/Alias/Rule 版本记录能力。
+一个聚焦审单场景的批量核心字段提取验证器，当前主链路为 `FastAPI + React`，已包含批量上传、核心字段提取、人工确认、准确率评估、批量汇总统计，以及 Prompt/Alias/Rule 配置能力。
 
 ## 快速开始
 
@@ -19,7 +19,6 @@ uvicorn audit_system.main:app --reload
 - `http://127.0.0.1:8000/api/v1/audit-logs`
 - `http://127.0.0.1:8000/`
 - `http://127.0.0.1:8000/foundation`
-- `http://127.0.0.1:8000/compare`
 - `http://127.0.0.1:8000/docs`
 
 ## 环境变量
@@ -32,21 +31,23 @@ uvicorn audit_system.main:app --reload
 
 ```text
 audit_system/
-├─ src/audit_system/
-│  ├─ api/
-│  ├─ db/
-│  ├─ models/
-│  ├─ schemas/
-│  ├─ services/
-│  ├─ config.py
-│  └─ main.py
-├─ alembic/
-│  ├─ versions/
-│  └─ env.py
-├─ llm/
-├─ tests/
+├─ src/audit_system/          # FastAPI 应用、数据库模型、API 路由
+├─ frontend/                  # React 源码
+├─ alembic/                   # 数据库迁移
+├─ services/                  # 提取、OCR、评估、知识库等核心服务
+├─ schemas/                   # 文档提取与评估结构
+├─ llm/                       # Prompt 与 LLM 客户端
+├─ knowledge/                 # alias / rule 数据
+├─ tests/                     # 后端测试
 └─ pyproject.toml
 ```
+
+## 当前代码主链路
+
+- 页面入口：`src/audit_system/main.py`
+- API 路由：`src/audit_system/api/routes/document_compare.py`
+- 前端页面：`frontend/src/App.jsx`
+- 提取主流程：`services/pdf_text_service.py` -> `services/extractor_service.py` -> `services/evaluator_service.py`
 
 ## 当前目标
 

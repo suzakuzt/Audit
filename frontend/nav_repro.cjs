@@ -1,0 +1,21 @@
+const { chromium } = require('playwright');
+(async()=>{
+  const browser = await chromium.launch({headless:true});
+  const page = await browser.newPage();
+  const logs = [];
+  page.on('console', msg => logs.push(`console:${msg.type()}:${msg.text()}`));
+  page.on('pageerror', err => logs.push(`pageerror:${err.message}`));
+  page.on('requestfailed', req => logs.push(`requestfailed:${req.url()}:${req.failure()?.errorText}`));
+  await page.goto('http://127.0.0.1:8000/', {waitUntil:'networkidle'});
+  await page.screenshot({path:'runtime_logs/nav-step1.png', fullPage:true});
+  await page.goto('http://127.0.0.1:8000/docs', {waitUntil:'networkidle'});
+  await page.goBack({waitUntil:'networkidle'});
+  await page.waitForTimeout(1500);
+  await page.screenshot({path:'runtime_logs/nav-step2-back.png', fullPage:true});
+  const body = await page.locator('body').innerText();
+  console.log('BODY_CHARS', body.length);
+  console.log('LOGS_START');
+  for (const l of logs) console.log(l);
+  console.log('LOGS_END');
+  await browser.close();
+})().catch(err=>{ console.error(err); process.exit(1); });

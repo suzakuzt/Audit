@@ -227,6 +227,33 @@ def test_document_foundation_evaluate_endpoint(client) -> None:
 
 
 
+def test_document_foundation_evaluate_excludes_no_such_field_rows_from_stats(client) -> None:
+    response = client.post(
+        "/api/v1/document-foundation/evaluate",
+        json={
+            "experiment_record": {"run_dir": "", "previous_run_dir": ""},
+            "documents": [
+                {
+                    "filename": "invoice.pdf",
+                    "manual_confirmation_rows": [
+                        {"standard_field": "contract_no", "ai_value": "INV-001", "confirmed_value": "INV-001"},
+                        {"standard_field": "amount", "ai_value": "USD 1000", "confirmed_value": "USD 900", "no_such_field": True},
+                    ],
+                }
+            ],
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    summary = payload["evaluation_summary"]
+    assert summary["total_fields"] == 1
+    assert summary["correct_fields"] == 1
+    assert summary["wrong_fields"] == 0
+    assert summary["excluded_fields"] == 1
+    assert summary["overall_accuracy"] == 100.0
+
+
 def test_document_foundation_evaluate_promotes_alias(client, monkeypatch) -> None:
     monkeypatch.setattr("audit_system.api.routes.document_compare.settings.llm_api_key", "fake-key")
     monkeypatch.setattr(

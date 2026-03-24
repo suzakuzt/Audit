@@ -19,14 +19,13 @@ class Settings(BaseSettings):
     llm_timeout: int = Field(default=180, alias="AUDIT_LLM_TIMEOUT")
     ocr_model: str | None = Field(default="deepseek-chat", alias="AUDIT_OCR_MODEL")
     ocr_max_pages: int = Field(default=3, alias="AUDIT_OCR_MAX_PAGES")
-    ocr_engine_preference: str = Field(default="paddle_only", alias="AUDIT_OCR_ENGINE_PREFERENCE")
+    force_remote_ocr_for_all_documents: bool = Field(default=False, alias="AUDIT_FORCE_REMOTE_OCR_FOR_ALL_DOCUMENTS")
     paddle_ocr_api_url: str = Field(default="", alias="AUDIT_PADDLE_OCR_API_URL")
     paddle_ocr_api_token: str = Field(default="", alias="AUDIT_PADDLE_OCR_API_TOKEN")
     paddle_ocr_api_timeout: int = Field(default=180, alias="AUDIT_PADDLE_OCR_API_TIMEOUT")
-    paddle_ocr_python_path: Path = Field(
-        default=Path(".venv_paddleocr/Scripts/python.exe"),
-        alias="AUDIT_PADDLE_OCR_PYTHON_PATH",
-    )
+    paddle_ocr_job_url: str = Field(default="", alias="AUDIT_PADDLE_OCR_JOB_URL")
+    paddle_ocr_model_name: str = Field(default="PaddleOCR-VL-1.5", alias="AUDIT_PADDLE_OCR_MODEL")
+    paddle_ocr_poll_interval_seconds: int = Field(default=5, alias="AUDIT_PADDLE_OCR_POLL_INTERVAL_SECONDS")
     pdfinfo_path: Path = Field(
         default=Path(r"C:\Program Files\poppler\poppler-24.08.0\Library\bin\pdfinfo.exe"),
         alias="AUDIT_PDFINFO_PATH",
@@ -42,6 +41,7 @@ class Settings(BaseSettings):
     runtime_temp_dir: Path = Field(default=Path(".runtime_tmp"), alias="AUDIT_RUNTIME_TEMP_DIR")
     validation_max_parallel: int = Field(default=2, alias="AUDIT_VALIDATION_MAX_PARALLEL")
     validation_include_visual_assets: bool = Field(default=True, alias="AUDIT_VALIDATION_INCLUDE_VISUAL_ASSETS")
+    canonical_shadow_enabled: bool = Field(default=True, alias="AUDIT_CANONICAL_SHADOW_ENABLED")
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -52,7 +52,6 @@ class Settings(BaseSettings):
 
     def model_post_init(self, __context: object) -> None:
         self.runtime_temp_dir = self._resolve_project_path(self.runtime_temp_dir)
-        self.paddle_ocr_python_path = self._resolve_project_path(self.paddle_ocr_python_path)
         self.pdfinfo_path = self._resolve_tool_path(self.pdfinfo_path, "pdfinfo.exe")
         self.pdftotext_path = self._resolve_tool_path(self.pdftotext_path, "pdftotext.exe")
         self.pdftoppm_path = self._resolve_tool_path(self.pdftoppm_path, "pdftoppm.exe")

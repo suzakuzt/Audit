@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 
 from llm.client import LLMResponse, LLMRuntimeConfig
-from services.extractor_service import _match_field_with_regex, extract_document_with_options
+from services.extractor_service import _fast_find_field, _match_field_with_regex, extract_document_with_options
 from services.pdf_text_service import PDFTextResult
 
 
@@ -241,3 +241,50 @@ def test_match_field_with_regex_extracts_factory_number() -> None:
     assert result["standard_field"] == "factory_no"
     assert result["source_field_name"] == "Plant No"
     assert result["source_value"] == "2782"
+
+
+def test_fast_find_field_extracts_payment_term_from_ocr_text() -> None:
+    text = "PAYMENT TERMS: 40% IN ADVANCE AND 60% AGAINST SCAN OF ORIGINAL DOCUMENTS"
+
+    result = _fast_find_field("payment_term", text, {})
+
+    assert result is not None
+    assert result["standard_field"] == "payment_term"
+    assert result["source_value"] == "40% IN ADVANCE AND 60% AGAINST SCAN OF ORIGINAL DOCUMENTS"
+
+
+def test_fast_find_field_extracts_multiline_beneficiary_bank() -> None:
+    text = "\n".join(
+        [
+            "BENEFICIARY BANK:",
+            "BANK OF CHINA SHANGHAI BRANCH",
+            "SWIFT: BKCHCNBJ300",
+            "PAYMENT TERMS: T/T",
+        ]
+    )
+
+    result = _fast_find_field("beneficiary_bank", text, {})
+
+    assert result is not None
+    assert result["standard_field"] == "beneficiary_bank"
+    assert result["source_value"] == "BANK OF CHINA SHANGHAI BRANCH | SWIFT: BKCHCNBJ300"
+
+
+def test_fast_find_field_maps_client_block_to_party_address_standard_field() -> None:
+    text = "\n".join(
+        [
+            "Client",
+            "ABC FOODS LLC",
+            "123 Market Street, Los Angeles, USA",
+            "Tel: +1 555 0100",
+            "Payment Terms: 40% IN ADVANCE",
+        ]
+    )
+
+    result = _fast_find_field("consignee_name_address", text, {})
+
+    assert result is not None
+    assert result["standard_field"] == "consignee_name_address"
+    assert result["source_field_name"] == "client"
+    assert "ABC FOODS LLC" in result["source_value"]
+    assert "123 Market Street" in result["source_value"]

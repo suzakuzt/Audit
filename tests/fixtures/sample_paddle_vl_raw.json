@@ -1,0 +1,85 @@
+{
+  "result": {
+    "layoutParsingResults": [
+      {
+        "prunedResult": {
+          "width": 1191,
+          "height": 1684,
+          "parsing_res_list": [
+            {
+              "block_label": "title",
+              "block_content": "PROFORMA INVOICE - BM 740/2025",
+              "block_bbox": [120, 110, 760, 165]
+            },
+            {
+              "block_label": "text",
+              "block_content": "DATE: 04/24/2025",
+              "block_bbox": [840, 112, 1080, 155]
+            },
+            {
+              "block_label": "text",
+              "block_content": "Client",
+              "block_bbox": [120, 248, 210, 278]
+            },
+            {
+              "block_label": "text",
+              "block_content": "HUBEI INTERNATIONAL TRADE AGRICULTURAL PRODUCTS CO., LTD",
+              "block_bbox": [120, 284, 910, 320]
+            },
+            {
+              "block_label": "text",
+              "block_content": "FLOOR 25, LIANGYOU BUILDING, NO.316, XINHUA ROAD",
+              "block_bbox": [120, 324, 910, 360]
+            },
+            {
+              "block_label": "text",
+              "block_content": "WUHAN CITY, HUBEI PROVINCE, CHINA.",
+              "block_bbox": [120, 362, 710, 398]
+            },
+            {
+              "block_label": "text",
+              "block_content": "DESCRIPTION",
+              "block_bbox": [120, 520, 380, 550]
+            },
+            {
+              "block_label": "text",
+              "block_content": "QTY",
+              "block_bbox": [410, 520, 480, 550]
+            },
+            {
+              "block_label": "text",
+              "block_content": "UNIT PRICE",
+              "block_bbox": [530, 520, 690, 550]
+            },
+            {
+              "block_label": "text",
+              "block_content": "AMOUNT",
+              "block_bbox": [760, 520, 900, 550]
+            },
+            {
+              "block_label": "text",
+              "block_content": "FROZEN BONELESS BEEF - BRISKET",
+              "block_bbox": [120, 565, 390, 598]
+            },
+            {
+              "block_label": "text",
+              "block_content": "4581",
+              "block_bbox": [420, 565, 485, 598]
+            },
+            {
+              "block_label": "text",
+              "block_content": "5.30",
+              "block_bbox": [548, 565, 620, 598]
+            },
+            {
+              "block_label": "text",
+              "block_content": "24279.30",
+              "block_bbox": [770, 565, 895, 598]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+

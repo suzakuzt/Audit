@@ -384,6 +384,96 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_amount",
+    "field": "amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_beneficiary_bank",
+    "field": "beneficiary_bank",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_beneficiary_bank",
+    "field": "beneficiary_bank",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_beneficiary_bank",
+    "field": "beneficiary_bank",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_beneficiary_bank",
+    "field": "beneficiary_bank",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_beneficiary_bank",
     "field": "beneficiary_bank",
     "description": "该字段缺失，建议补充规则",
@@ -1272,350 +1362,26 @@
     "rule_type": "candidate"
   },
   {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "???????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "???????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
+    "name": "missing_consignee_name_address",
+    "field": "consignee_name_address",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
-    "name": "missing_contract_no",
-    "field": "contract_no",
+    "name": "missing_consignee_name_address",
+    "field": "consignee_name_address",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
-    "name": "missing_contract_no",
-    "field": "contract_no",
+    "name": "missing_consignee_name_address",
+    "field": "consignee_name_address",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
+    "name": "missing_consignee_name_address",
+    "field": "consignee_name_address",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
@@ -1623,12 +1389,6 @@
     "name": "missing_contract_no",
     "field": "contract_no",
     "description": "???????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "missing_contract_no",
-    "field": "contract_no",
-    "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -1688,6 +1448,906 @@
   {
     "name": "missing_contract_no",
     "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_contract_no",
+    "field": "contract_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_factory_no",
+    "field": "factory_no",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
@@ -2433,6 +3093,516 @@
     "name": "missing_hs_code",
     "field": "hs_code",
     "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_hs_code",
+    "field": "hs_code",
+    "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -3912,6 +5082,192 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_payment_term",
+    "field": "payment_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_payment_term",
+    "field": "payment_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_payment_term",
+    "field": "payment_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_payment_term",
+    "field": "payment_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_destination",
+    "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_port_of_destination",
     "field": "port_of_destination",
     "description": "该字段缺失，建议补充规则",
@@ -4592,6 +5948,96 @@
   {
     "name": "missing_port_of_destination",
     "field": "port_of_destination",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_port_of_origin",
+    "field": "port_of_origin",
     "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
@@ -5697,6 +7143,138 @@
     "name": "missing_prepayment_amount",
     "field": "prepayment_amount",
     "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "???????????????????",
     "rule_type": "candidate"
   },
   {
@@ -7896,6 +9474,444 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shelf_life",
+    "field": "shelf_life",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_shipment_date",
     "field": "shipment_date",
     "description": "该字段缺失，建议补充规则",
@@ -8772,6 +10788,24 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_total_amount",
+    "field": "total_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_amount",
+    "field": "total_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_amount",
+    "field": "total_amount",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_total_weight",
     "field": "total_weight",
     "description": "???????????????????",
@@ -9474,6 +11508,144 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_total_weight",
+    "field": "total_weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_trade_term",
+    "field": "trade_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_trade_term",
+    "field": "trade_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_trade_term",
+    "field": "trade_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_trade_term",
+    "field": "trade_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_trade_term",
+    "field": "trade_term",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_trade_term",
     "field": "trade_term",
     "description": "该字段缺失，建议补充规则",
@@ -10542,6 +12714,156 @@
     "rule_type": "candidate"
   },
   {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit",
+    "field": "unit",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_unit_price",
+    "field": "unit_price",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
     "name": "missing_unit_price",
     "field": "unit_price",
     "description": "该字段缺失，建议补充规则",
@@ -11325,6 +13647,84 @@
     "name": "missing_weight",
     "field": "weight",
     "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "???????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "missing_weight",
+    "field": "weight",
+    "description": "该字段缺失，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -12081,6 +14481,72 @@
     "name": "uncertain_amount",
     "field": "amount",
     "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段当前不确定，建议补充判别或优先级规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_amount",
+    "field": "amount",
+    "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -12528,9 +14994,375 @@
     "rule_type": "candidate"
   },
   {
+    "name": "uncertain_consignee_name_address",
+    "field": "consignee_name_address",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_consignee_name_address",
+    "field": "consignee_name_address",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_consignee_name_address",
+    "field": "consignee_name_address",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_consignee_name_address",
+    "field": "consignee_name_address",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
     "name": "uncertain_contract_no",
     "field": "contract_no",
     "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_contract_no",
+    "field": "contract_no",
+    "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -12732,216 +15564,6 @@
     "rule_type": "candidate"
   },
   {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "该字段结果不稳定，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "该字段结果不稳定，建议补充规则",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
-    "name": "uncertain_contract_no",
-    "field": "contract_no",
-    "description": "??????????????????????",
-    "rule_type": "candidate"
-  },
-  {
     "name": "uncertain_port_of_destination",
     "field": "port_of_destination",
     "description": "??????????????????????",
@@ -13644,6 +16266,192 @@
     "rule_type": "candidate"
   },
   {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_destination",
+    "field": "port_of_destination",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
     "name": "uncertain_port_of_origin",
     "field": "port_of_origin",
     "description": "??????????????????????",
@@ -14067,6 +16875,204 @@
     "name": "uncertain_port_of_origin",
     "field": "port_of_origin",
     "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_port_of_origin",
+    "field": "port_of_origin",
+    "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_prepayment_amount",
+    "field": "prepayment_amount",
+    "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -14961,6 +17967,228 @@
     "name": "uncertain_product_name",
     "field": "product_name",
     "description": "??????????????????????",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_shipment_date",
+    "field": "shipment_date",
+    "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },
   {
@@ -15702,8 +18930,68 @@
     "rule_type": "candidate"
   },
   {
-    "name": "uncertain_unit_price",
-    "field": "unit_price",
+    "name": "uncertain_trade_term",
+    "field": "trade_term",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_trade_term",
+    "field": "trade_term",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_trade_term",
+    "field": "trade_term",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_trade_term",
+    "field": "trade_term",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_trade_term",
+    "field": "trade_term",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit",
+    "field": "unit",
     "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },
@@ -15830,6 +19118,96 @@
   {
     "name": "uncertain_unit_price",
     "field": "unit_price",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit_price",
+    "field": "unit_price",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_unit_price",
+    "field": "unit_price",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
+    "description": "该字段结果不稳定，建议补充规则",
+    "rule_type": "candidate"
+  },
+  {
+    "name": "uncertain_weight",
+    "field": "weight",
     "description": "该字段结果不稳定，建议补充规则",
     "rule_type": "candidate"
   },

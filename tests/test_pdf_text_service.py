@@ -7,7 +7,7 @@ def test_extract_pdf_text_prefers_remote_paddle_ocr_when_enabled(monkeypatch) ->
     monkeypatch.setattr('services.pdf_text_service.settings.paddle_ocr_api_token', 'token-123')
     monkeypatch.setattr('services.pdf_text_service._extract_with_paddle_remote_ocr', lambda content: ('Contract No: R 251/2025\nExporter: BFC-USA LLC\nClient: Example Buyer', 1, {'ocr_model': 'paddleocr-vl-remote', 'ocr_api_called': True}))
 
-    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, engine_preference='paddle_only'))
+    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, force_ocr=True, engine_preference='paddle_only'))
 
     assert result.is_text_valid is True
     assert result.text == 'Contract No: R 251/2025\nExporter: BFC-USA LLC\nClient: Example Buyer'
@@ -22,10 +22,30 @@ def test_extract_pdf_text_requires_remote_paddle_configuration(monkeypatch) -> N
     monkeypatch.setattr('services.pdf_text_service._extract_with_pypdf', lambda content: ('', 0, None))
     monkeypatch.setattr('services.pdf_text_service.settings.paddle_ocr_api_token', '')
 
-    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, engine_preference='paddle_only'))
+    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, force_ocr=True, engine_preference='paddle_only'))
 
     assert result.metadata.get('ocr_status') == 'failed'
     assert any('Remote PaddleOCR is required' in warning for warning in result.warnings)
+
+
+def test_extract_pdf_text_prefers_deepseek_first_then_ocr_fallback(monkeypatch) -> None:
+    monkeypatch.setattr('services.pdf_text_service._extract_with_pdfplumber', lambda content: ('', 0, None))
+    monkeypatch.setattr('services.pdf_text_service._extract_with_pypdf', lambda content: ('', 0, None))
+    called = {'remote': 0}
+
+    def fake_remote(content):
+        called['remote'] += 1
+        return ('OCR TEXT', 1, {'ocr_model': 'paddleocr-vl-remote'})
+
+    monkeypatch.setattr('services.pdf_text_service._extract_with_paddle_remote_ocr', fake_remote)
+    monkeypatch.setattr('services.pdf_text_service.settings.paddle_ocr_api_token', 'token-123')
+    monkeypatch.setattr('services.pdf_text_service.settings.force_remote_ocr_for_all_documents', False)
+
+    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, force_ocr=False, engine_preference='paddle_only'))
+
+    assert called['remote'] == 0
+    assert result.metadata.get('ocr_status') == 'pending'
+    assert result.metadata.get('source_kind') == 'scan_like'
 
 def test_extract_pdf_text_uses_remote_paddle_api_when_configured(monkeypatch) -> None:
     monkeypatch.setattr('services.pdf_text_service._extract_with_pdfplumber', lambda content: ('', 0, None))
@@ -45,7 +65,7 @@ def test_extract_pdf_text_uses_remote_paddle_api_when_configured(monkeypatch) ->
 
     monkeypatch.setattr('services.pdf_text_service._extract_with_paddle_remote_ocr', fake_remote)
 
-    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, engine_preference='paddle_only'))
+    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, force_ocr=True, engine_preference='paddle_only'))
 
     assert result.is_text_valid is True
     assert result.metadata.get('ocr_engine') == 'paddleocr'
@@ -81,7 +101,7 @@ def test_extract_pdf_text_remote_paddle_exposes_preview_images(monkeypatch) -> N
 
     monkeypatch.setattr('services.pdf_text_service._extract_with_paddle_remote_ocr', fake_remote)
 
-    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, engine_preference='paddle_only'))
+    result = extract_pdf_text('scan.pdf', b'%PDF', OCRRunConfig(enabled=True, force_ocr=True, engine_preference='paddle_only'))
 
     assert result.metadata.get('ocr_preview_images')[0]['image_data_url'] == 'https://example.com/page-1.jpg'
 

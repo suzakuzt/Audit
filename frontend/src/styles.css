@@ -414,6 +414,10 @@ th {
   word-break: break-word;
 }
 
+.result-value-missing {
+  color: #c2410c;
+}
+
 .result-value-block {
   display: grid;
   gap: 8px;
@@ -1026,6 +1030,31 @@ th {
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.review-checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+/* Force the two review toggles to stay on one row inside review grid cells. */
+.review-manual-grid .review-checkbox-inline {
+  display: flex !important;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap !important;
+}
+
+.review-manual-grid label.review-checkbox-row {
+  display: inline-flex !important;
+  margin-bottom: 0;
+  width: auto;
+  max-width: none;
 }
 
 .candidate-wrap {
@@ -1671,6 +1700,11 @@ th {
 
   .review-checkbox-row {
     white-space: normal;
+  }
+
+  .review-checkbox-inline {
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 }
 

@@ -14,6 +14,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from audit_system.config import settings
 from schemas.document_schema import STANDARD_FIELD_LABELS, STANDARD_FIELD_LEVELS
 from llm.client import LLMRuntimeConfig
+from services.document_structuring.canonical_json_builder import CanonicalJSONBuilder
 from services.extractor_service import extract_document_with_options, list_prompt_versions, load_knowledge_file
 from services.pdf_text_service import OCRRunConfig, build_pdf_visual_assets, extract_pdf_text
 from services.run_store import apply_manual_confirmations, persist_extraction_run
@@ -169,6 +170,13 @@ def _process_uploaded_document(
         rule_active=rule_active,
         focus_field_list=focus_field_list,
     )
+    if include_visuals:
+        # Ensure preview pages follow the final selected OCR/text result.
+        # This prevents "no image" when OCR retry becomes selected after initial pass.
+        final_metadata = _payload_metadata(pdf_result)
+        visual_pages = _merge_visual_pages_with_fallback(visual_pages, final_metadata)
+        if not visual_pages:
+            visual_pages = _build_visual_fallback_pages(final_metadata)
     return _build_document_payload(
         pdf_result.model_dump(),
         extraction.model_dump(),
@@ -282,8 +290,6 @@ def _should_retry_with_ocr(
     if not ocr_enabled or force_ocr_value:
         return False
     metadata = _payload_metadata(pdf_result) if pdf_result is not None else {}
-    if str(metadata.get('source_kind', '')) != 'digital_text':
-        return False
     if str(metadata.get('ocr_status', '')) == 'applied':
         return False
     structured = _payload_structured_data(extraction) if extraction is not None else {}
@@ -372,7 +378,7 @@ def document_foundation_ui_config() -> dict[str, Any]:
         "use_alias_active": False,
         "use_rule_active": True,
         "enable_ocr": True,
-        "force_ocr": True,
+        "force_ocr": False,
         "focus_fields": default_focus_fields,
         "focus_labels": STANDARD_FIELD_LABELS,
         "field_levels": STANDARD_FIELD_LEVELS,
@@ -882,7 +888,246 @@ def _build_document_payload(pdf_result: dict[str, Any], extraction: dict[str, An
         "rule_candidates": _collect_rule_candidates(missing, uncertain, rule_pool),
         "manual_confirmation_rows": _build_manual_rows(mapped, missing, uncertain),
         "visual_pages": visual_pages or [],
+        "canonical_shadow_summary": _build_canonical_shadow_summary(
+            file_name=str(pdf_result.get("file_name", "") or extraction.get("file_name", "") or "document.pdf"),
+            pdf_result=pdf_result,
+            extraction=extraction,
+            visual_pages=visual_pages or [],
+        ),
     }
+
+
+def _build_canonical_shadow_summary(*, file_name: str, pdf_result: dict[str, Any], extraction: dict[str, Any], visual_pages: list[dict[str, Any]]) -> dict[str, Any] | None:
+    if not bool(settings.canonical_shadow_enabled):
+        return None
+    metadata = pdf_result.get("metadata", {}) if isinstance(pdf_result.get("metadata", {}), dict) else {}
+    preview_pages = metadata.get("ocr_preview_images", [])
+    try:
+        raw_payload = {}
+        source = "ocr_preview_images"
+        if isinstance(preview_pages, list) and preview_pages:
+            raw_payload = _build_shadow_raw_payload_from_preview(preview_pages)
+        else:
+            raw_payload = _build_shadow_raw_payload_from_visual_pages(visual_pages)
+            source = "visual_page_words"
+        if not raw_payload.get("layoutParsingResults"):
+            return {
+                "enabled": True,
+                "status": "skipped",
+                "reason": "no_layout_blocks_for_shadow_builder",
+                "source": source,
+            }
+        builder = CanonicalJSONBuilder()
+        build_result = builder.build_from_raw(raw_payload, doc_id=file_name)
+        structured = extraction.get("structured_data", {}) if isinstance(extraction.get("structured_data", {}), dict) else {}
+        mapped_fields = structured.get("mapped_fields", []) if isinstance(structured.get("mapped_fields", []), list) else []
+        hit_count, total_count = _count_mapped_field_hits_against_candidates(mapped_fields, build_result.kv_candidates)
+        hit_rate = round((hit_count / total_count) * 100, 1) if total_count else 0.0
+        return {
+            "enabled": True,
+            "status": "ok",
+            "source": source,
+            "doc_id": build_result.canonical.doc_id,
+            "document_type_candidate": build_result.canonical.document_type_candidate,
+            "pages": build_result.canonical.pages,
+            "metrics": {
+                "merged_blocks": len(build_result.merged_blocks),
+                "kv_candidates": len(build_result.kv_candidates),
+                "table_candidates": len(build_result.table_candidates),
+                "mapped_fields_total": total_count,
+                "mapped_fields_hit_by_candidates": hit_count,
+                "mapped_fields_hit_rate": f"{hit_rate}%",
+            },
+        }
+    except Exception as exc:
+        return {
+            "enabled": True,
+            "status": "failed",
+            "reason": str(exc)[:200],
+        }
+
+
+def _build_shadow_raw_payload_from_preview(preview_pages: list[dict[str, Any]]) -> dict[str, Any]:
+    layout_results: list[dict[str, Any]] = []
+    for page in preview_pages:
+        if not isinstance(page, dict):
+            continue
+        raw_blocks = page.get("blocks", [])
+        parsing_res_list: list[dict[str, Any]] = []
+        if isinstance(raw_blocks, list):
+            for block in raw_blocks:
+                if not isinstance(block, dict):
+                    continue
+                text = str(block.get("text", "") or "").strip()
+                if not text:
+                    continue
+                bbox = [
+                    float(block.get("x0", 0) or 0),
+                    float(block.get("top", 0) or 0),
+                    float(block.get("x1", 0) or 0),
+                    float(block.get("bottom", 0) or 0),
+                ]
+                block_label = str(block.get("label", "") or "text")
+                parsing_res_list.append(
+                    {
+                        "block_content": text,
+                        "block_bbox": bbox,
+                        "block_label": block_label,
+                    }
+                )
+                # Expand html-table like content into finer-grained pseudo rows so KV/table builder has anchors.
+                if "<table" in text.lower() or "<tr" in text.lower() or "<td" in text.lower():
+                    parsing_res_list.extend(_expand_table_html_blocks(text, bbox, block_label))
+        layout_results.append(
+            {
+                "prunedResult": {
+                    "width": int(page.get("page_width", 0) or 0),
+                    "height": int(page.get("page_height", 0) or 0),
+                    "parsing_res_list": parsing_res_list,
+                }
+            }
+        )
+    return {"layoutParsingResults": layout_results}
+
+
+def _build_shadow_raw_payload_from_visual_pages(visual_pages: list[dict[str, Any]]) -> dict[str, Any]:
+    layout_results: list[dict[str, Any]] = []
+    for index, page in enumerate(visual_pages or [], start=1):
+        if not isinstance(page, dict):
+            continue
+        words = page.get("words", [])
+        parsing_res_list: list[dict[str, Any]] = []
+        if isinstance(words, list) and words:
+            lines = _group_words_to_lines(words)
+            for line in lines:
+                text = str(line.get("text", "")).strip()
+                bbox = line.get("bbox", [])
+                if not text or not isinstance(bbox, list) or len(bbox) != 4:
+                    continue
+                parsing_res_list.append(
+                    {
+                        "block_content": text,
+                        "block_bbox": [float(bbox[0]), float(bbox[1]), float(bbox[2]), float(bbox[3])],
+                        "block_label": "text",
+                    }
+                )
+        layout_results.append(
+            {
+                "prunedResult": {
+                    "width": int(page.get("page_width", 0) or 0),
+                    "height": int(page.get("page_height", 0) or 0),
+                    "parsing_res_list": parsing_res_list,
+                }
+            }
+        )
+    return {"layoutParsingResults": layout_results}
+
+
+def _group_words_to_lines(words: list[dict[str, Any]], y_tolerance: float = 10.0) -> list[dict[str, Any]]:
+    valid = []
+    for word in words:
+        if not isinstance(word, dict):
+            continue
+        text = str(word.get("text", "") or "").strip()
+        if not text:
+            continue
+        x0 = float(word.get("x0", 0) or 0)
+        x1 = float(word.get("x1", 0) or 0)
+        top = float(word.get("top", 0) or 0)
+        bottom = float(word.get("bottom", 0) or 0)
+        center_y = (top + bottom) / 2.0
+        valid.append({"text": text, "x0": x0, "x1": x1, "top": top, "bottom": bottom, "center_y": center_y})
+    valid.sort(key=lambda item: (item["center_y"], item["x0"]))
+    lines: list[list[dict[str, Any]]] = []
+    for item in valid:
+        placed = False
+        for line in lines:
+            avg_y = sum(x["center_y"] for x in line) / max(1, len(line))
+            if abs(item["center_y"] - avg_y) <= y_tolerance:
+                line.append(item)
+                placed = True
+                break
+        if not placed:
+            lines.append([item])
+    output: list[dict[str, Any]] = []
+    for line in lines:
+        line.sort(key=lambda x: x["x0"])
+        text = " ".join(x["text"] for x in line).strip()
+        bbox = [
+            min(x["x0"] for x in line),
+            min(x["top"] for x in line),
+            max(x["x1"] for x in line),
+            max(x["bottom"] for x in line),
+        ]
+        output.append({"text": text, "bbox": bbox})
+    return output
+
+
+def _expand_table_html_blocks(text: str, bbox: list[float], block_label: str) -> list[dict[str, Any]]:
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", text, flags=re.I | re.S)
+    if not rows:
+        return []
+    top, bottom = float(bbox[1]), float(bbox[3])
+    x0, x1 = float(bbox[0]), float(bbox[2])
+    height = max(1.0, bottom - top)
+    row_height = height / max(1, len(rows))
+    expanded: list[dict[str, Any]] = []
+    for index, row_html in enumerate(rows):
+        cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row_html, flags=re.I | re.S)
+        cell_text = " | ".join(_strip_html(x) for x in cells if _strip_html(x))
+        row_text = cell_text or _strip_html(row_html)
+        if not row_text:
+            continue
+        row_top = top + index * row_height
+        row_bottom = min(bottom, row_top + row_height)
+        expanded.append(
+            {
+                "block_content": row_text,
+                "block_bbox": [x0, row_top, x1, row_bottom],
+                "block_label": f"{block_label}_row",
+            }
+        )
+    return expanded
+
+
+def _strip_html(value: str) -> str:
+    text = re.sub(r"<[^>]+>", " ", str(value or ""))
+    text = (
+        text.replace("&nbsp;", " ")
+        .replace("&amp;", "&")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&#x27;", "'")
+        .replace("&quot;", '"')
+    )
+    return " ".join(text.split()).strip()
+
+
+def _count_mapped_field_hits_against_candidates(mapped_fields: list[dict[str, Any]], kv_candidates: list[Any]) -> tuple[int, int]:
+    total = 0
+    hits = 0
+    candidate_texts = []
+    for candidate in kv_candidates:
+        label_text = str(getattr(candidate, "label_text", "") or "").strip().lower()
+        value_text = str(getattr(candidate, "value_text", "") or "").strip().lower()
+        candidate_texts.append((label_text, value_text))
+    for mapped in mapped_fields:
+        if not isinstance(mapped, dict):
+            continue
+        source_name = str(mapped.get("source_field_name", "") or "").strip().lower()
+        source_value = str(mapped.get("source_value", "") or "").strip().lower()
+        target = source_value or source_name
+        if not target:
+            continue
+        total += 1
+        matched = any(
+            (target and (target in label or target in value))
+            or (source_name and source_name in label)
+            for label, value in candidate_texts
+        )
+        if matched:
+            hits += 1
+    return hits, total
 
 
 def _collect_alias_hits(mapped: list[dict[str, Any]], alias_active: dict[str, list[str]]) -> list[dict[str, str]]:
@@ -937,7 +1182,7 @@ def _collect_rule_candidates(missing: list[str], uncertain: list[str], rule_pool
     results.extend([{"name": item.get("name", ""), "field": item.get("field", "global"), "reason": item.get("description", "\u89c4\u5219\u5019\u9009") } for item in rule_pool if not item.get("field") or item.get("field") in (set(missing) | set(uncertain))])
     return _dedupe(results, ("name", "field"))
 
-def _build_manual_rows(mapped: list[dict[str, Any]], missing: list[str], uncertain: list[str]) -> list[dict[str, str]]:
+def _build_manual_rows(mapped: list[dict[str, Any]], missing: list[str], uncertain: list[str]) -> list[dict[str, Any]]:
     rows, seen = [], set()
     for item in mapped:
         field_name = str(item.get("standard_field", ""))
@@ -945,11 +1190,11 @@ def _build_manual_rows(mapped: list[dict[str, Any]], missing: list[str], uncerta
             continue
         seen.add(field_name)
         value = str(item.get("source_value", "") or "")
-        rows.append({"standard_field": field_name, "standard_label_cn": item.get("standard_label_cn") or STANDARD_FIELD_LABELS.get(field_name, field_name), "ai_value": value, "confirmed_value": value, "promote_alias": False})
+        rows.append({"standard_field": field_name, "standard_label_cn": item.get("standard_label_cn") or STANDARD_FIELD_LABELS.get(field_name, field_name), "ai_value": value, "confirmed_value": value, "promote_alias": False, "no_such_field": False})
     for field_name in [*missing, *uncertain]:
         if field_name not in seen:
             seen.add(field_name)
-            rows.append({"standard_field": field_name, "standard_label_cn": STANDARD_FIELD_LABELS.get(field_name, field_name), "ai_value": "", "confirmed_value": "", "promote_alias": False})
+            rows.append({"standard_field": field_name, "standard_label_cn": STANDARD_FIELD_LABELS.get(field_name, field_name), "ai_value": "", "confirmed_value": "", "promote_alias": False, "no_such_field": False})
     return rows
 
 
@@ -1110,6 +1355,7 @@ def _build_evaluation_summary(documents: list[dict[str, Any]]) -> dict[str, Any]
     wrong_fields = 0
     missing_fields = 0
     empty_fields = 0
+    excluded_fields = 0
     field_buckets: dict[str, dict[str, Any]] = {}
     document_accuracy_stats: list[dict[str, Any]] = []
     for doc in documents:
@@ -1117,11 +1363,18 @@ def _build_evaluation_summary(documents: list[dict[str, Any]]) -> dict[str, Any]
         doc_correct = 0
         doc_wrong = 0
         doc_missing = 0
+        doc_excluded = 0
+        doc_total = 0
         for row in rows:
+            if bool(row.get("no_such_field", False)):
+                excluded_fields += 1
+                doc_excluded += 1
+                continue
             field_name = str(row.get("standard_field", ""))
             ai_norm = normalize_text(row.get("ai_value", ""))
             confirmed_norm = normalize_text(row.get("confirmed_value", ""))
             total_fields += 1
+            doc_total += 1
             bucket = field_buckets.setdefault(field_name, {"field": field_name, "correct_count": 0, "wrong_count": 0, "missing_count": 0, "empty_count": 0, "accuracy": 0.0})
             if not ai_norm and not confirmed_norm:
                 empty_fields += 1
@@ -1140,15 +1393,14 @@ def _build_evaluation_summary(documents: list[dict[str, Any]]) -> dict[str, Any]
                 wrong_fields += 1
                 doc_wrong += 1
                 bucket["wrong_count"] += 1
-        row_count = len(rows)
-        document_accuracy_stats.append({"filename": doc.get("filename", ""), "correct_fields": doc_correct, "wrong_fields": doc_wrong, "missing_fields": doc_missing, "accuracy": round((doc_correct / row_count) * 100, 1) if row_count else 0.0})
+        document_accuracy_stats.append({"filename": doc.get("filename", ""), "correct_fields": doc_correct, "wrong_fields": doc_wrong, "missing_fields": doc_missing, "excluded_fields": doc_excluded, "accuracy": round((doc_correct / doc_total) * 100, 1) if doc_total else 0.0})
     for bucket in field_buckets.values():
         denominator = bucket["correct_count"] + bucket["wrong_count"] + bucket["missing_count"]
         bucket["accuracy"] = round((bucket["correct_count"] / denominator) * 100, 1) if denominator else 0.0
     field_accuracy_stats = sorted(field_buckets.values(), key=lambda item: (item["accuracy"], -item["wrong_count"], item["field"]))
     document_accuracy_stats.sort(key=lambda item: (item["accuracy"], -item["wrong_fields"], item["filename"]))
     denominator = correct_fields + wrong_fields + missing_fields
-    return {"total_documents": len(documents), "total_fields": total_fields, "correct_fields": correct_fields, "wrong_fields": wrong_fields, "missing_fields": missing_fields, "empty_fields": empty_fields, "overall_accuracy": round((correct_fields / denominator) * 100, 1) if denominator else 0.0, "field_accuracy_stats": field_accuracy_stats, "document_accuracy_stats": document_accuracy_stats}
+    return {"total_documents": len(documents), "total_fields": total_fields, "correct_fields": correct_fields, "wrong_fields": wrong_fields, "missing_fields": missing_fields, "empty_fields": empty_fields, "excluded_fields": excluded_fields, "overall_accuracy": round((correct_fields / denominator) * 100, 1) if denominator else 0.0, "field_accuracy_stats": field_accuracy_stats, "document_accuracy_stats": document_accuracy_stats}
 
 
 def _save_confirmed_evaluation(experiment_record: dict[str, Any], evaluation_summary: dict[str, Any]) -> dict[str, Any]:

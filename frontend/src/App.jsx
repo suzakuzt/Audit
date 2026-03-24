@@ -142,7 +142,7 @@ const EMPTY_CONFIG = {
   use_alias_active: false,
   use_rule_active: true,
   enable_ocr: true,
-  force_ocr: true,
+  force_ocr: false,
   focus_fields: CORE_FIELDS,
   focus_labels: {},
   model_options: [
@@ -358,9 +358,11 @@ function collectEvidence(doc, field, extraTerms = []) {
 function resolvePreviewPages(doc) {
   const visualPages = Array.isArray(doc.visual_pages) ? doc.visual_pages : [];
   const visualWithImages = visualPages.filter((page) => page?.image_data_url);
-  if (visualWithImages.length) return visualWithImages;
-  const metaPages = doc?.raw_text_result?.metadata?.ocr_preview_images;
-  return Array.isArray(metaPages) ? metaPages.filter((page) => page?.image_data_url) : [];
+  const localRenderedPages = visualWithImages.filter((page) => String(page?.image_data_url || '').startsWith('data:image/'));
+  if (localRenderedPages.length) return localRenderedPages;
+  // Fallback to any available image so users can always preview.
+  // We still only draw our own hit boxes on top.
+  return visualWithImages;
 }
 
 function bestVisualPage(doc, field, extraTerms = []) {
@@ -452,29 +454,9 @@ function collectHighlights(page, terms, field) {
     });
   }
 
-  if (boxes.length) {
-    return boxes.slice(0, 12);
-  }
-  const blocks = Array.isArray(page?.blocks) ? page.blocks : [];
-  const normalizedTerms = terms.map((term) => normalizeSearchText(term)).filter(Boolean);
-  const compactTerms = terms.map((term) => ({ raw: term, compact: compactText(term) })).filter((item) => item.compact);
-  blocks.forEach((block) => {
-    const blockText = normalizeSearchText(block.text || '');
-    const compactBlockText = compactText(block.text || '');
-    if (!blockText && !compactBlockText) return;
-    const matchedTerm = normalizedTerms.find((term) => blockText.includes(term))
-      || compactTerms.find((item) => compactBlockText.includes(item.compact))?.raw;
-    if (!matchedTerm) return;
-    boxes.push({
-      term: matchedTerm,
-      color: fieldColor(field),
-      x0: Number(block.x0 || 0),
-      x1: Number(block.x1 || 0),
-      top: Number(block.top || 0),
-      bottom: Number(block.bottom || 0),
-    });
-  });
-  return boxes.slice(0, 12);
+  // Keep the locator clean: only render word-level hit boxes.
+  // Do not fallback to block-level boxes, because they can be very large/noisy.
+  return boxes.slice(0, 6);
 }
 
 function cloneDocuments(documents) {
@@ -600,6 +582,7 @@ function buildReviewWorkbench(documents, focusFields, focusLabels) {
         sourceKind: String(doc.raw_text_result?.metadata?.source_kind || ''),
         aliasHit,
         isMismatch: manual.match_status === 'mismatched',
+        noSuchField: manual.no_such_field === true,
         reviewNote: String(manual.review_note || ''),
         semanticBlock: String(mapping.semantic_block || ''),
         semanticCandidateClass: String(mapping.semantic_candidate_class || ''),
@@ -694,12 +677,15 @@ function buildReviewWorkbench(documents, focusFields, focusLabels) {
 }
 
 function summarizeReviewDecisions(rows) {
-  const total = rows.length;
-  const mismatched = rows.filter((row) => row.isMismatch).length;
+  const effectiveRows = (rows || []).filter((row) => row.noSuchField !== true);
+  const total = effectiveRows.length;
+  const excluded = (rows || []).length - total;
+  const mismatched = effectiveRows.filter((row) => row.isMismatch).length;
   const matched = total - mismatched;
-  const withNotes = rows.filter((row) => String(row.reviewNote || '').trim()).length;
+  const withNotes = effectiveRows.filter((row) => String(row.reviewNote || '').trim()).length;
   return {
     total,
+    excluded,
     matched,
     mismatched,
     withNotes,
@@ -1156,6 +1142,7 @@ function AppContent() {
           ai_value: mapping.source_value || '',
           confirmed_value: '',
           promote_alias: false,
+          no_such_field: false,
         };
         doc.manual_confirmation_rows.push(manual);
       }
@@ -1179,6 +1166,7 @@ function AppContent() {
           ai_value: '',
           confirmed_value: '',
           promote_alias: checked,
+          no_such_field: false,
         };
         doc.manual_confirmation_rows.push(manual);
       }
@@ -1230,12 +1218,14 @@ function AppContent() {
             ai_value: row.sourceValue || '',
             confirmed_value: row.sourceValue || '',
             promote_alias: checked,
+            no_such_field: false,
           };
           doc.manual_confirmation_rows.push(manual);
         }
         manual.standard_field = targetField;
         manual.standard_label_cn = targetLabel;
         manual.promote_alias = checked;
+        manual.no_such_field = false;
         manual.ai_value = row.sourceValue || manual.ai_value || '';
         manual.confirmed_value = row.sourceValue || manual.confirmed_value || '';
         doc.standard_mappings = mergeByStandardField(doc.standard_mappings);
@@ -1321,10 +1311,40 @@ function AppContent() {
           ai_value: '',
           confirmed_value: '',
           promote_alias: false,
+          no_such_field: false,
         };
         doc.manual_confirmation_rows.push(manual);
       }
       manual.match_status = checked ? 'mismatched' : 'matched';
+      manual.no_such_field = false;
+      return { ...prev, documents: docs };
+    });
+  }
+
+  function updateNoSuchField(docFilename, field, checked) {
+    setResultData((prev) => {
+      if (!prev) return prev;
+      const docs = cloneDocuments(prev.documents || []);
+      const doc = docs.find((item) => item.filename === docFilename);
+      if (!doc) return prev;
+      if (!Array.isArray(doc.manual_confirmation_rows)) doc.manual_confirmation_rows = [];
+      let manual = doc.manual_confirmation_rows.find((item) => item.standard_field === field);
+      if (!manual) {
+        manual = {
+          standard_field: field,
+          standard_label_cn: config.focus_labels?.[field] || field,
+          ai_value: '',
+          confirmed_value: '',
+          promote_alias: false,
+          no_such_field: false,
+          match_status: 'matched',
+        };
+        doc.manual_confirmation_rows.push(manual);
+      }
+      manual.no_such_field = checked === true;
+      if (manual.no_such_field) {
+        manual.match_status = 'matched';
+      }
       return { ...prev, documents: docs };
     });
   }
@@ -1344,6 +1364,7 @@ function AppContent() {
           ai_value: '',
           confirmed_value: '',
           promote_alias: false,
+          no_such_field: false,
           match_status: 'matched',
         };
         doc.manual_confirmation_rows.push(manual);
@@ -1357,7 +1378,7 @@ function AppContent() {
     if (!resultData?.documents?.length) return;
     const docs = cloneDocuments(resultData.documents).map((doc) => {
       const mergedManualRows = [...(doc.manual_confirmation_rows || [])];
-      const aliasRows = mergedManualRows.filter((manual) => manual.promote_alias === true);
+      const aliasRows = mergedManualRows.filter((manual) => manual.promote_alias === true && manual.no_such_field !== true);
       const aliasFields = new Set(aliasRows.map((manual) => manual.standard_field));
       return {
         ...doc,
@@ -1433,11 +1454,14 @@ function AppContent() {
   const hasReviewRows = resultTemplateMatchesSelection && reviewWorkbench.rows.length > 0;
 
   const recognitionSummary = useMemo(() => {
-    const totalPairs = reviewWorkbench.rows.length;
-    const fieldHits = reviewWorkbench.rows.filter((row) => normalizeText(row.sourceFieldName)).length;
-    const valueHits = reviewWorkbench.rows.filter((row) => String(row.sourceValue || '').trim()).length;
+    const effectiveRows = reviewWorkbench.rows.filter((row) => row.noSuchField !== true);
+    const totalPairs = effectiveRows.length;
+    const excludedPairs = reviewWorkbench.rows.length - totalPairs;
+    const fieldHits = effectiveRows.filter((row) => normalizeText(row.sourceFieldName)).length;
+    const valueHits = effectiveRows.filter((row) => String(row.sourceValue || '').trim()).length;
     return {
       totalPairs,
+      excludedPairs,
       fieldHits,
       valueHits,
       fieldRate: formatRate(fieldHits, totalPairs),
@@ -1457,11 +1481,14 @@ function AppContent() {
       config.focus_labels,
     );
     const currentRecognitionSummary = (() => {
-      const totalPairs = currentWorkbench.rows.length;
-      const fieldHits = currentWorkbench.rows.filter((row) => normalizeText(row.sourceFieldName)).length;
-      const valueHits = currentWorkbench.rows.filter((row) => String(row.sourceValue || '').trim()).length;
+      const effectiveRows = currentWorkbench.rows.filter((row) => row.noSuchField !== true);
+      const totalPairs = effectiveRows.length;
+      const excludedPairs = currentWorkbench.rows.length - totalPairs;
+      const fieldHits = effectiveRows.filter((row) => normalizeText(row.sourceFieldName)).length;
+      const valueHits = effectiveRows.filter((row) => String(row.sourceValue || '').trim()).length;
       return {
         totalPairs,
+        excludedPairs,
         fieldHits,
         valueHits,
         fieldRate: formatRate(fieldHits, totalPairs),
@@ -1474,11 +1501,12 @@ function AppContent() {
       ['模板', submittedTemplateSnapshot?.templateName || selectedTemplate?.name || '当前模板'],
       ['整体字段识别率', `${currentRecognitionSummary.fieldRate} (${currentRecognitionSummary.fieldHits}/${currentRecognitionSummary.totalPairs})`],
       ['字段值识别率', `${currentRecognitionSummary.valueRate} (${currentRecognitionSummary.valueHits}/${currentRecognitionSummary.totalPairs})`],
+      ['已排除字段（无此字段）', String(currentRecognitionSummary.excludedPairs)],
       ['人工复核准确率', currentReviewDecisionSummary.accuracy],
       ['一致数量', String(currentReviewDecisionSummary.matched)],
       ['不一致数量', String(currentReviewDecisionSummary.mismatched)],
       [],
-      ['单据', '字段', '识别链路', '识别字段名', '识别值', '是否不一致', '备注'],
+      ['单据', '字段', '识别链路', '识别字段名', '识别值', '无此字段', '是否不一致', '备注'],
     ];
     currentWorkbench.rows.forEach((row) => {
       exportRows.push([
@@ -1487,6 +1515,7 @@ function AppContent() {
         extractionMarker(row.doc),
         row.sourceFieldName || '',
         row.sourceValue || '',
+        row.noSuchField ? '是' : '否',
         row.isMismatch ? '是' : '否',
         row.reviewNote || '',
       ]);
@@ -1626,13 +1655,13 @@ function AppContent() {
           <div className="summary-chip-row top-gap-small">
             <div className="summary-chip-card">
               <span className="summary-label">验证总数</span>
-              <strong>{reviewWorkbench.rows.length}</strong>
+              <strong>{recognitionSummary.totalPairs}</strong>
               <span className="doc-meta">{`字段名取到 ${recognitionSummary.fieldRate} / 字段值取到 ${recognitionSummary.valueRate}`}</span>
             </div>
             <div className="summary-chip-card">
               <span className="summary-label">已取到值</span>
               <strong>{recognitionSummary.valueHits}</strong>
-              <span className="doc-meta">{`未取到值 ${Math.max(0, reviewWorkbench.rows.length - recognitionSummary.valueHits)}`}</span>
+              <span className="doc-meta">{`未取到值 ${Math.max(0, recognitionSummary.totalPairs - recognitionSummary.valueHits)}`}</span>
             </div>
             <div className="summary-chip-card">
               <span className="summary-label">当前准确度</span>
@@ -1640,9 +1669,9 @@ function AppContent() {
               <span className="doc-meta">{`一致 ${reviewDecisionSummary.matched} / 不一致 ${reviewDecisionSummary.mismatched}`}</span>
             </div>
             <div className="summary-chip-card">
-              <span className="summary-label">已写备注</span>
-              <strong>{reviewDecisionSummary.withNotes}</strong>
-              <span className="doc-meta">勾选不一致后可补充原因</span>
+              <span className="summary-label">已排除字段</span>
+              <strong>{reviewDecisionSummary.excluded}</strong>
+              <span className="doc-meta">勾选“无此字段”后不计入统计</span>
             </div>
           </div>
 
@@ -1681,10 +1710,16 @@ function AppContent() {
                     </div>
                     <div className="review-cell review-cell-note">
                       <span className="summary-label">复核</span>
-                      <label className="review-checkbox-row">
-                        <input type="checkbox" checked={row.isMismatch} onChange={(event) => updateReviewMismatch(row.doc.filename, row.field, event.target.checked)} />
-                        <span>标记为不准确</span>
-                      </label>
+                      <div className="review-checkbox-inline">
+                        <label className="review-checkbox-row">
+                          <input type="checkbox" checked={row.noSuchField === true} onChange={(event) => updateNoSuchField(row.doc.filename, row.field, event.target.checked)} />
+                          <span>无此字段（不计入统计）</span>
+                        </label>
+                        <label className="review-checkbox-row">
+                          <input type="checkbox" checked={row.isMismatch} disabled={row.noSuchField === true} onChange={(event) => updateReviewMismatch(row.doc.filename, row.field, event.target.checked)} />
+                          <span>标记为不准确</span>
+                        </label>
+                      </div>
                       <textarea
                         className="review-note-input"
                         value={row.reviewNote}
@@ -1818,6 +1853,8 @@ function ExpandableValue({ value }) {
 
 function LocatorModal({ doc, field, focusLabels, extraTerms, onClose }) {
   const mapping = (doc.standard_mappings || []).find((item) => item.standard_field === field) || {};
+  const shadow = (doc.canonical_shadow_summary && typeof doc.canonical_shadow_summary === 'object') ? doc.canonical_shadow_summary : null;
+  const shadowMetrics = (shadow?.metrics && typeof shadow.metrics === 'object') ? shadow.metrics : {};
   const page = bestVisualPage(doc, field, extraTerms);
   const evidence = collectEvidence(doc, field, extraTerms);
   const terms = [mapping.source_field_name, mapping.source_value, ...(extraTerms || [])].map((item) => String(item || '').trim()).filter(Boolean);
@@ -1869,13 +1906,7 @@ function LocatorModal({ doc, field, focusLabels, extraTerms, onClose }) {
                 </div>
               </div>
             ) : <p className="muted-text">{TEXT.noImage}</p>}
-            {highlights.length ? (
-              <div className="legend-row">
-                {highlights.slice(0, 4).map((item, index) => (
-                  <span key={`${item.term}:${index}`} className="legend-tag" style={{ background: `${item.color}14`, color: item.color, borderColor: `${item.color}55` }}>{item.term}</span>
-                ))}
-              </div>
-            ) : null}
+            {null}
           </section>
           <section className="side-stack">
             <section className="panel-card detail-panel">
@@ -1886,6 +1917,19 @@ function LocatorModal({ doc, field, focusLabels, extraTerms, onClose }) {
                 <div><strong>{'\u793a\u4f8b\u503c\uff1a'}</strong>{mapping.source_value || '-'}</div>
                 <div><strong>{'\u8bc6\u522b\u6765\u6e90\uff1a'}</strong>{extractionMarker(doc)}</div>
               </div>
+            </section>
+            <section className="panel-card detail-panel">
+              <h4>{'\u4e2d\u95f4\u5c42\u7ed3\u6784\u5316'}</h4>
+              {shadow ? (
+                <div className="detail-list">
+                  <div><strong>状态：</strong>{String(shadow.status || '-')}</div>
+                  <div><strong>文档类型候选：</strong>{String(shadow.document_type_candidate || '-')}</div>
+                  <div><strong>命中率：</strong>{String(shadowMetrics.mapped_fields_hit_rate || '-')}</div>
+                  <div><strong>合并块 / KV候选 / 表格候选：</strong>{`${Number(shadowMetrics.merged_blocks || 0)} / ${Number(shadowMetrics.kv_candidates || 0)} / ${Number(shadowMetrics.table_candidates || 0)}`}</div>
+                  <div><strong>字段命中：</strong>{`${Number(shadowMetrics.mapped_fields_hit_by_candidates || 0)} / ${Number(shadowMetrics.mapped_fields_total || 0)}`}</div>
+                  {shadow.reason ? <div><strong>说明：</strong>{String(shadow.reason)}</div> : null}
+                </div>
+              ) : <p className="muted-text">当前结果未返回中间层结构化摘要。</p>}
             </section>
             <section className="panel-card evidence-panel">
               <h4>{'\u6587\u672c\u547d\u4e2d\u7247\u6bb5'}</h4>
